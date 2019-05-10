@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+service Connect{
+    rpc ConnectServer(HelloServer) returns (HelloWorker) {}
+}
+
+message HelloServer{
+    string WorkerIp = 1;
+    string WorkerPort = 2;
+}
+
+message HelloWorker{
+    bool Confirmation = 1;
+}
+
+//python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. connect.proto

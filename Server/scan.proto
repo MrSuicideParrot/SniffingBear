@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service Scan{
+    rpc ScanIp(ScanRequest) returns (ScanResponse) {}
+}
+
+message ScanRequest{
+    string Ip = 1;
+}
+
+message ScanResponse{
+    string Resposta = 1;
+}
+
+//python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. scan.proto
