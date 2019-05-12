@@ -1,0 +1,6 @@
+[Core]
+Name = Beartrap honeypot
+Module = beartrap
+
+[Documentation]
+Description = Beatrap plugin
