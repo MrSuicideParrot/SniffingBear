@@ -1,5 +1,4 @@
-from ModulesPackages import Module
-
+from ModulesPackage import Module
 
 import .tests
 
