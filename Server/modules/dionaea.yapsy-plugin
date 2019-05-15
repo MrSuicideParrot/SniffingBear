@@ -1,0 +1,6 @@
+[Core]
+Name = Dionaea honeypot
+Module = dionaea
+
+[Documentation]
+Description = Dionaea plugin

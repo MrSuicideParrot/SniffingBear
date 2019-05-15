@@ -1,0 +1,6 @@
+[Core]
+Name = amun honeypot
+Module = amun
+
+[Documentation]
+Description = amun plugin
