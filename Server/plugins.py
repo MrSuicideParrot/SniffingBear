@@ -6,3 +6,6 @@ simplePluginManager = PluginManager()
 simplePluginManager.setPluginPlaces(["modules"])
 # Load all plugins
 simplePluginManager.collectPlugins()
+
+plugins = simplePluginManager.getAllPlugins()
+print(plugins)
