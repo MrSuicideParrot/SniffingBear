@@ -1,7 +1,7 @@
 from yapsy.IPlugin import IPlugin
 import socket
 
-class FTPTest(IPlugin):
+class FTPTest():
     """Name"""
     __name = "dionaea FTP Banner Test"
 
@@ -36,3 +36,25 @@ class FTPTest(IPlugin):
                 return False
         except socket.timeout: 
             print("conexao deu timeout")
+
+
+class Amun(IPlugin):
+
+    """ List of tests """
+    __test_list = [FTPTest]
+
+    @staticmethod
+    def get_test_list():
+        return Module.__test_list
+
+    @staticmethod
+    def get_port_list():
+        port_list = set()
+
+        for i in Module.__test_list:
+            port_list.add(i.get_port())
+
+    @staticmethod
+    def run(ip):
+        for i in Dionaea.__test_list:
+            i.run(ip)

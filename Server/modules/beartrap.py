@@ -1,12 +1,12 @@
 from yapsy.IPlugin import IPlugin
 import socket
 
-class FTPTest(IPlugin):
+class FTPTest():
     """Name"""
-    __name = "dionaea FTP Banner Test"
+    __name = "BearTrap FTP Banner Test"
 
     """ Description """
-    __description = "Test for service banner of dionaea"
+    __description = "Test for service banner of BearTrap"
 
     """ Port nedded on the test"""
     __port = 20
@@ -38,4 +38,23 @@ class FTPTest(IPlugin):
             print("conexao deu timeout")
 
 
+class BearTrap(IPlugin):
 
+    """ List of tests """
+    __test_list = [FTPTest]
+
+    @staticmethod
+    def get_test_list():
+        return Module.__test_list
+
+    @staticmethod
+    def get_port_list():
+        port_list = set()
+
+        for i in Module.__test_list:
+            port_list.add(i.get_port())
+
+    @staticmethod
+    def run(ip):
+        for i in Dionaea.__test_list:
+            i.run(ip)
