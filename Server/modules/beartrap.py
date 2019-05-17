@@ -1,13 +1,12 @@
-from ModulesPackage import Module, PortTest
+from yapsy.IPlugin import IPlugin
 import socket
 
-
-class FTPTest(PortTest):
+class FTPTest(IPlugin):
     """Name"""
-    __name = "BearTrap FTP Banner Test"
+    __name = "dionaea FTP Banner Test"
 
     """ Description """
-    __description = "Test for service banner of beartrap"
+    __description = "Test for service banner of dionaea"
 
     """ Port nedded on the test"""
     __port = 20
@@ -18,26 +17,25 @@ class FTPTest(PortTest):
             '220 BearTrap-ftpd Service ready\r\n'
         ]
 
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
-            soc.bind(ip, FTPTest.__port)
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
+                soc.settimeout(2)
+                soc.connect((ip, FTPTest.__port))
 
-            max_length = len(banners[0])
+                max_length = len(banners[0])
 
-            for i in banners:
-                if max_length < len(i):
-                    max_length = len(i)
+                for i in banners:
+                    if max_length < len(i):
+                        max_length = len(i)
 
-            r = soc.recv(max_length)
-            for i in banners:
-                if i in r:
-                    return True
+                r = soc.recv(max_length)
+                for i in banners:
+                    if i in r:
+                        return True
 
-            return False
-
-
-class BearTrap(Module):
-    """ List of tests """
-    __test_list = [FTPTest]
+                return False
+        except socket.timeout: 
+            print("conexao deu timeout")
 
 
 

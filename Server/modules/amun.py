@@ -1,4 +1,4 @@
-from ModulesPackage import Module, PortTest
+from yapsy.IPlugin import IPlugin
 import socket
 
 class FTPTest(PortTest):
