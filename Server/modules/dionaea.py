@@ -14,7 +14,7 @@ class FTPTest(IPlugin):
     @staticmethod
     def run(ip):
         banners = [
-            '220 DiskStation FTP server ready.\r\n'
+            b'220 DiskStation FTP server ready.\r\n'
         ]
 
         try:

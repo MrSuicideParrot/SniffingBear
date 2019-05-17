@@ -14,7 +14,7 @@ class FTPTest(IPlugin):
     @staticmethod
     def run(ip):
         banners = [
-            '220 BearTrap-ftpd Service ready\r\n'
+            b'220 BearTrap-ftpd Service ready\r\n'
         ]
 
         try:
