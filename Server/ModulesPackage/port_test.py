@@ -21,5 +21,5 @@ class PortTest:
         return PortTest.__port
 
     @staticmethod
-    def run():
+    def run(ip):
         raise NotImplementedError

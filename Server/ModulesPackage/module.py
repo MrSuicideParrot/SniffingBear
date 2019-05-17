@@ -17,6 +17,6 @@ class Module(IPlugin):
             port_list.add(i.get_port())
 
     @staticmethod
-    def run():
+    def run(ip):
         raise NotImplementedError
 
