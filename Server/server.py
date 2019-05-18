@@ -4,10 +4,10 @@ import grpc
 from concurrent import futures
 import threading
 import time
-import connect_pb2
-import connect_pb2_grpc
-import scan_pb2
-import scan_pb2_grpc
+from GrpcServerWorker import connect_pb2
+from GrpcServerWorker import connect_pb2_grpc
+from GrpcServerWorker import scan_pb2
+from GrpcServerWorker import scan_pb2_grpc
 
 
 workerList={}
