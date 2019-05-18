@@ -30,22 +30,22 @@ class FTPTest():
         ]
 
         try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
-                soc.settimeout(2)
-                soc.connect((ip, FTPTest.__port))
+            soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            soc.settimeout(2)
+            soc.connect((ip, FTPTest.__port))
 
-                max_length = len(banners[0])
+            max_length = len(banners[0])
 
-                for i in banners:
-                    if max_length < len(i):
-                        max_length = len(i)
+            for i in banners:
+                if max_length < len(i):
+                    max_length = len(i)
 
-                r = soc.recv(max_length)
-                for i in banners:
-                    if i in r:
-                        return True
-
-                return False
+            r = soc.recv(max_length)
+            soc.close()
+            for i in banners:
+                if i in r:
+                    return True  
+            return False
         except socket.timeout: 
             print("conexao deu timeout")
 
