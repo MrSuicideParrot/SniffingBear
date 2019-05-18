@@ -1,0 +1,6 @@
+[Core]
+Name = TelnetLogger honeypot
+Module = telnetlogger
+
+[Documentation]
+Description = telnetlogger plugin

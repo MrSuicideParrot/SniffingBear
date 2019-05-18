@@ -9,19 +9,19 @@ class FTPTest():
     __description = "Test for service banner of dionaea"
 
     """ Port nedded on the test"""
-    __port = 20
+    __port = [20, 21, 989, 990]
 
     @staticmethod
     def get_name():
-        return PortTest.__name
+        return FTPTest.__name
 
     @staticmethod
     def get_description():
-        return PortTest.__description
+        return FTPTest.__description
 
     @staticmethod
     def get_port():
-        return PortTest.__port
+        return FTPTest.__port
 
     @staticmethod
     def run(ip):
@@ -32,19 +32,20 @@ class FTPTest():
         try:
             soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             soc.settimeout(2)
-            soc.connect((ip, FTPTest.__port))
+            for j in FTPTest.__port:
+                soc.connect((ip, j))
 
-            max_length = len(banners[0])
+                max_length = len(banners[0])
 
-            for i in banners:
-                if max_length < len(i):
-                    max_length = len(i)
+                for i in banners:
+                    if max_length < len(i):
+                        max_length = len(i)
 
-            r = soc.recv(max_length)
-            soc.close()
-            for i in banners:
-                if i in r:
-                    return True  
+                r = soc.recv(max_length)
+                soc.close()
+                for i in banners:
+                    if i in r:
+                        return True  
             return False
         except socket.timeout: 
             print("conexao deu timeout")
@@ -57,14 +58,15 @@ class Dionaea(IPlugin):
 
     @staticmethod
     def get_test_list():
-        return Module.__test_list
+        return Dionaea.__test_list
 
     @staticmethod
     def get_port_list():
         port_list = set()
 
-        for i in Module.__test_list:
-            port_list.add(i.get_port())
+        for i in Dionaea.__test_list:
+            port_list.update(i.get_port())
+        return port_list
 
     @staticmethod
     def run(ip):

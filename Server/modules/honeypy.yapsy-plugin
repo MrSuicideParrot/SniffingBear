@@ -1,0 +1,6 @@
+[Core]
+Name = Honeypy honeypot
+Module = honeypy
+
+[Documentation]
+Description = honeypy plugin
