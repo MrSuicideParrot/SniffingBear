@@ -23,6 +23,7 @@ class ServerInit(connect_pb2_grpc.ConnectServicer):
 
         try:
             while True:
+                #time.sleep(60 * 60 * 24)
                 if(len(workerList)>0 ):
                     EnviarScans() #TODO
         except KeyboardInterrupt:
@@ -35,20 +36,21 @@ class ServerInit(connect_pb2_grpc.ConnectServicer):
         addrs=ipWorker+":"+portWorker
 
         workerList.append(addrs)
-        print("[*] Nova Ligagação: "+addrs)
+        print("[*] Nova Ligacao: "+addrs)
 
         result = {'Confirmation': True}
         return connect_pb2.HelloWorker(**result)
 
 def scanSingleIp(IptoScan):
     channel = grpc.insecure_channel(workerList[0]) #TODO
+    print(grpc.ChannelConnectivity(channel))
     stub = scan_pb2_grpc.ScanStub(channel)
     message =scan_pb2.ScanRequest(Ip=IptoScan)
     return stub.ScanIp(message)
 
 def EnviarScans():
     ipToScan=input("Insira um ip : ")
-    scanSingleIp(ipToScan)
+    scanSingleIp(str.encode(str(ipToScan)))
 
 
 def main():

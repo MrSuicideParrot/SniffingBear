@@ -1,3 +1,4 @@
+
 from concurrent import futures
 import time
 import sys
@@ -19,13 +20,14 @@ class ServerInit():
 
         #self.channel = grpc.insecure_channel('{}:{}'.format(self.host, self.server_port))
         self.channel = grpc.insecure_channel(serverIp+":"+serverPort)
+        print(grpc.StatusCode(self.channel))
         self.stub = connect_pb2_grpc.ConnectStub(self.channel)
 
     def connectToServer(self, messageIp,messagePort):
         message =connect_pb2.HelloServer(WorkerIp=messageIp,WorkerPort=messagePort)
         return self.stub.ConnectServer(message)
 
-class ServerScan():
+class ServerScan(scan_pb2_grpc.ScanServicer):
 
     def start_server(self):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -43,6 +45,7 @@ class ServerScan():
             print('[*] A Encerrar o Client')
 
     def ScanIp(self, request, context): #TODO
+        print("[*] Scanning ")
         print("[*] Scanning "+request.Ip)
 
         result = {'Resposta': "Fostes Scanado"}
