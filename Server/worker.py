@@ -1,4 +1,5 @@
-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from concurrent import futures
 import time
 import sys
@@ -11,7 +12,7 @@ import scan_pb2_grpc
 
 serverIp='localhost'
 serverPort="46000"
-WorkerPort="46001"
+#WorkerPort="46001"
 
 class ServerInit():
     def __init__(self):
@@ -20,7 +21,6 @@ class ServerInit():
 
         #self.channel = grpc.insecure_channel('{}:{}'.format(self.host, self.server_port))
         self.channel = grpc.insecure_channel(serverIp+":"+serverPort)
-        print(grpc.StatusCode(self.channel))
         self.stub = connect_pb2_grpc.ConnectStub(self.channel)
 
     def connectToServer(self, messageIp,messagePort):
@@ -29,7 +29,7 @@ class ServerInit():
 
 class ServerScan(scan_pb2_grpc.ScanServicer):
 
-    def start_server(self):
+    def start_server(self,WorkerPort):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         scan_pb2_grpc.add_ScanServicer_to_server(ServerScan(),server)
         server.add_insecure_port('[::]:{}'.format(WorkerPort))
@@ -45,8 +45,9 @@ class ServerScan(scan_pb2_grpc.ScanServicer):
             print('[*] A Encerrar o Client')
 
     def ScanIp(self, request, context): #TODO
-        print("[*] Scanning ")
-        print("[*] Scanning "+request.Ip)
+
+
+        print("[*] Scanning "+request.IpRange+" Modulo "+request.Modulo)
 
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
@@ -60,7 +61,8 @@ def main():
 
     print("[*] Client Server Started")
     scan = ServerScan()
-    scan.start_server()
+    scan.start_server(WorkerPort)
+    print("[*] Acabou")
 
 
 if __name__== "__main__":

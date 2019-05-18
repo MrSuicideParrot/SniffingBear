@@ -1,4 +1,5 @@
-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import grpc
 from concurrent import futures
 import threading
@@ -8,7 +9,9 @@ import connect_pb2_grpc
 import scan_pb2
 import scan_pb2_grpc
 
-workerList=[]
+
+workerList={}
+scanQueue={}
 portaServidor="46000"
 
 class ServerInit(connect_pb2_grpc.ConnectServicer):
@@ -23,9 +26,16 @@ class ServerInit(connect_pb2_grpc.ConnectServicer):
 
         try:
             while True:
+                ipToScan=raw_input("Insira um ip : ")
+                moduleToScan=raw_input("Insira o url de um modulo : ")
+                tmp={ipToScan:moduleToScan}
+                scanQueue.update(tmp) #TODO redistribuir o iprange
+                for worker,avaiable in workerList.iteritems():
+                    if avaiable == True:
+                        ip,module=scanQueue.popitem()
+                        sendScan(worker,ip,module)
                 #time.sleep(60 * 60 * 24)
-                if(len(workerList)>0 ):
-                    EnviarScans() #TODO
+
         except KeyboardInterrupt:
             server.stop(0)
             print('[*] A Encerrar o Servidor')
@@ -34,29 +44,24 @@ class ServerInit(connect_pb2_grpc.ConnectServicer):
         ipWorker = request.WorkerIp
         portWorker = request.WorkerPort
         addrs=ipWorker+":"+portWorker
-
-        workerList.append(addrs)
-        print("[*] Nova Ligacao: "+addrs)
+        tmp={str(addrs):True}
+        workerList.update(tmp)
+        print("\n[*] Nova Ligacao: "+addrs)
 
         result = {'Confirmation': True}
         return connect_pb2.HelloWorker(**result)
 
-def scanSingleIp(IptoScan):
-    channel = grpc.insecure_channel(workerList[0]) #TODO
-    print(grpc.ChannelConnectivity(channel))
+def sendScan(worker,range,module):
+    channel = grpc.insecure_channel(worker) #TODO
     stub = scan_pb2_grpc.ScanStub(channel)
-    message =scan_pb2.ScanRequest(Ip=IptoScan)
+    message =scan_pb2.ScanRequest(IpRange=range,Modulo=module)
     return stub.ScanIp(message)
-
-def EnviarScans():
-    ipToScan=input("Insira um ip : ")
-    scanSingleIp(str.encode(str(ipToScan)))
 
 
 def main():
     curr_server = ServerInit()
     curr_server.start_server()
-
+    print("[*] Acabou")
 
 if __name__== "__main__":
     main()
