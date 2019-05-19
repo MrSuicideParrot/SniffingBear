@@ -1,0 +1,6 @@
+[Core]
+Name = cowrie
+Module = Cowrie
+
+[Documentation]
+Description = Cowrie plugin tests
