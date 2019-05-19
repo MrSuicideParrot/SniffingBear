@@ -29,10 +29,10 @@ class FTPTest():
             b'220 Welcome to my FTP Server\r\n'
         ]
 
-        try:
-            soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            soc.settimeout(2)
-            for j in FTPTest.__port:
+        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        soc.settimeout(2)
+        for j in FTPTest.__port:
+            try:
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -46,9 +46,9 @@ class FTPTest():
                 for i in banners:
                     if i in r:
                         return True  
-            return False
-        except socket.error: 
-            return False
+            except socket.error: 
+                pass
+        return False
 
 class IMAPTest():
     """Name"""
@@ -78,10 +78,10 @@ class IMAPTest():
             b'a200 Lotus Domino 6.5.4 7.0.2 IMAP4\r\n'
         ]
 
-        try:
-            soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            soc.settimeout(2)
-            for j in IMAPTest.__port:
+        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        soc.settimeout(2)
+        for j in IMAPTest.__port:
+            try:
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -95,9 +95,9 @@ class IMAPTest():
                 for i in banners:
                     if i in r:
                         return True  
-            return False
-        except socket.error: 
-            return False
+            except socket.error:
+                pass
+        return False
 
 class SMTPTest():
     """Name"""
@@ -127,10 +127,10 @@ class SMTPTest():
             b'220 mail.example.com SMTP Mailserver\r\n'
         ]
 
-        try:
-            soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            soc.settimeout(2)
-            for j in SMTPTest.__port:
+        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        soc.settimeout(2)
+        for j in SMTPTest.__port:
+            try:
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -144,9 +144,9 @@ class SMTPTest():
                 for i in banners:
                     if i in r:
                         return True  
-            return False
-        except socket.error: 
-            return False
+            except socket.error: 
+                pass
+        return False
 
 class Amun(IPlugin):
 

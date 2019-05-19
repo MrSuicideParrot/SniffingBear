@@ -29,17 +29,18 @@ class VersionSpecificKippo():
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(5)
 
-        try:
-            s.connect((ip, VersionSpecificKippo.__port))
-            banner = s.recv(1024)
-            s.send(b'\n\n\n\n\n\n\n\n')
-            response = s.recv(1024)
-            s.close()
-        except socket.error:
-            return False
+        for j in VersionSpecificKippo.__port:
+            try:
+                s.connect((ip, j))
+                banner = s.recv(1024)
+                s.send(b'\n\n\n\n\n\n\n\n')
+                response = s.recv(1024)
+                s.close()
+            except socket.error:
+                pass
 
-        if '168430090' in response or 'bad packet length' in response:
-            return True
+            if '168430090' in response or 'bad packet length' in response:
+                return True
 
         return False
 

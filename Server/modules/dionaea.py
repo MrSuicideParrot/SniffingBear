@@ -28,11 +28,11 @@ class FTPTest():
         banners = [
             b'220 DiskStation FTP server ready.\r\n'
         ]
-
-        try:
-            soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            soc.settimeout(2)
-            for j in FTPTest.__port:
+        
+        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        soc.settimeout(2)
+        for j in FTPTest.__port:
+            try:
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -46,9 +46,10 @@ class FTPTest():
                 for i in banners:
                     if i in r:
                         return True  
-            return False
-        except socket.error: 
-            return False
+            except socket.error: 
+                pass
+        return False
+        
 
 
 class Dionaea(IPlugin):
