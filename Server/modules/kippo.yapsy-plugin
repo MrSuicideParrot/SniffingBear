@@ -1,0 +1,6 @@
+[Core]
+Name = kippo
+Module = kippo
+
+[Documentation]
+Description = Kippo ssh honeypot

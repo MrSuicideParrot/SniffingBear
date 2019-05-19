@@ -1,0 +1,6 @@
+[Core]
+Name = tanner
+Module = tanner
+
+[Documentation]
+Description = Snare/Tanner honeypot Module
