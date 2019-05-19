@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
+
 from concurrent import futures
 import time
 import sys
 import grpc
-from GrpcServerWorker import connect_pb2
-from GrpcServerWorker import connect_pb2_grpc
-from GrpcServerWorker import scan_pb2
-from GrpcServerWorker import scan_pb2_grpc
+from GrpcProto import connect_pb2
+from GrpcProto import connect_pb2_grpc
+from GrpcProto import scan_pb2
+from GrpcProto import scan_pb2_grpc
 
 
 serverIp='localhost'

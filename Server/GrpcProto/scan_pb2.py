@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nscan.proto\".\n\x0bScanRequest\x12\x0f\n\x07IpRange\x18\x01 \x01(\t\x12\x0e\n\x06Modulo\x18\x02 \x01(\t\" \n\x0cScanResponse\x12\x10\n\x08Resposta\x18\x01 \x01(\t\"$\n\x12\x44\x65scriptionRequest\x12\x0e\n\x06Modulo\x18\x01 \x01(\t\"*\n\x13\x44\x65scriptionResponse\x12\x13\n\x0b\x44\x65scription\x18\x01 \x01(\t2o\n\x04Scan\x12>\n\x0fScanDescription\x12\x13.DescriptionRequest\x1a\x14.DescriptionResponse\"\x00\x12\'\n\x06ScanIp\x12\x0c.ScanRequest\x1a\r.ScanResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nscan.proto\".\n\x0bScanRequest\x12\x0f\n\x07IpRange\x18\x01 \x01(\t\x12\x0e\n\x06Modulo\x18\x02 \x01(\t\" \n\x0cScanResponse\x12\x10\n\x08Resposta\x18\x01 \x01(\t\"$\n\x12\x44\x65scriptionRequest\x12\x0e\n\x06Modulo\x18\x01 \x01(\t\"*\n\x13\x44\x65scriptionResponse\x12\x13\n\x0b\x44\x65scription\x18\x01 \x01(\t\",\n\x0eModulesRequest\x12\x1a\n\x12RequestModulesName\x18\x01 \x01(\t\"\"\n\nModuleList\x12\x14\n\x0cModulesNames\x18\x01 \x03(\t2\x9e\x01\n\x04Scan\x12>\n\x0fScanDescription\x12\x13.DescriptionRequest\x1a\x14.DescriptionResponse\"\x00\x12\'\n\x06ScanIp\x12\x0c.ScanRequest\x1a\r.ScanResponse\"\x00\x12-\n\x0bListModules\x12\x0f.ModulesRequest\x1a\x0b.ModuleList\"\x00\x62\x06proto3')
 )
 
 
@@ -156,10 +156,74 @@ _DESCRIPTIONRESPONSE = _descriptor.Descriptor(
   serialized_end=176,
 )
 
+
+_MODULESREQUEST = _descriptor.Descriptor(
+  name='ModulesRequest',
+  full_name='ModulesRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='RequestModulesName', full_name='ModulesRequest.RequestModulesName', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=178,
+  serialized_end=222,
+)
+
+
+_MODULELIST = _descriptor.Descriptor(
+  name='ModuleList',
+  full_name='ModuleList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='ModulesNames', full_name='ModuleList.ModulesNames', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=224,
+  serialized_end=258,
+)
+
 DESCRIPTOR.message_types_by_name['ScanRequest'] = _SCANREQUEST
 DESCRIPTOR.message_types_by_name['ScanResponse'] = _SCANRESPONSE
 DESCRIPTOR.message_types_by_name['DescriptionRequest'] = _DESCRIPTIONREQUEST
 DESCRIPTOR.message_types_by_name['DescriptionResponse'] = _DESCRIPTIONRESPONSE
+DESCRIPTOR.message_types_by_name['ModulesRequest'] = _MODULESREQUEST
+DESCRIPTOR.message_types_by_name['ModuleList'] = _MODULELIST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ScanRequest = _reflection.GeneratedProtocolMessageType('ScanRequest', (_message.Message,), dict(
@@ -190,6 +254,20 @@ DescriptionResponse = _reflection.GeneratedProtocolMessageType('DescriptionRespo
   ))
 _sym_db.RegisterMessage(DescriptionResponse)
 
+ModulesRequest = _reflection.GeneratedProtocolMessageType('ModulesRequest', (_message.Message,), dict(
+  DESCRIPTOR = _MODULESREQUEST,
+  __module__ = 'scan_pb2'
+  # @@protoc_insertion_point(class_scope:ModulesRequest)
+  ))
+_sym_db.RegisterMessage(ModulesRequest)
+
+ModuleList = _reflection.GeneratedProtocolMessageType('ModuleList', (_message.Message,), dict(
+  DESCRIPTOR = _MODULELIST,
+  __module__ = 'scan_pb2'
+  # @@protoc_insertion_point(class_scope:ModuleList)
+  ))
+_sym_db.RegisterMessage(ModuleList)
+
 
 
 _SCAN = _descriptor.ServiceDescriptor(
@@ -198,8 +276,8 @@ _SCAN = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=178,
-  serialized_end=289,
+  serialized_start=261,
+  serialized_end=419,
   methods=[
   _descriptor.MethodDescriptor(
     name='ScanDescription',
@@ -217,6 +295,15 @@ _SCAN = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_SCANREQUEST,
     output_type=_SCANRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListModules',
+    full_name='Scan.ListModules',
+    index=2,
+    containing_service=None,
+    input_type=_MODULESREQUEST,
+    output_type=_MODULELIST,
     serialized_options=None,
   ),
 ])
