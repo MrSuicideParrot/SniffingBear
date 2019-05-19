@@ -1,5 +1,5 @@
 [Core]
-Name = TelnetLogger honeypot
+Name = telnetlogger honeypot
 Module = telnetlogger
 
 [Documentation]

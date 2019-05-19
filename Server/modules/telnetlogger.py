@@ -47,8 +47,8 @@ class TELNETTest():
                     if i in r:
                         return True  
             return False
-        except socket.timeout: 
-            print("conexao deu timeout")
+        except socket.error: 
+            return False
 
 
 class TelnetLogger(IPlugin):
@@ -70,5 +70,7 @@ class TelnetLogger(IPlugin):
 
     @staticmethod
     def run(ip):
+        list = []
         for i in TelnetLogger.__test_list:
-            i.run(ip)
+            list.append(i.run(ip))
+        return list

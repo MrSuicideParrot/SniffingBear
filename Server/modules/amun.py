@@ -3,7 +3,7 @@ import socket
 
 class FTPTest():
     """Name"""
-    __name = "dionaea FTP Banner Test"
+    __name = "amun FTP Banner Test"
 
     """ Description """
     __description = "Test for service banner of dionaea"
@@ -47,8 +47,8 @@ class FTPTest():
                     if i in r:
                         return True  
             return False
-        except socket.timeout: 
-            print("conexao deu timeout")
+        except socket.error: 
+            return False
 
 class IMAPTest():
     """Name"""
@@ -96,8 +96,8 @@ class IMAPTest():
                     if i in r:
                         return True  
             return False
-        except socket.timeout: 
-            print("conexao deu timeout")
+        except socket.error: 
+            return False
 
 class SMTPTest():
     """Name"""
@@ -145,8 +145,8 @@ class SMTPTest():
                     if i in r:
                         return True  
             return False
-        except socket.timeout: 
-            print("conexao deu timeout")
+        except socket.error: 
+            return False
 
 class Amun(IPlugin):
 
@@ -167,5 +167,7 @@ class Amun(IPlugin):
 
     @staticmethod
     def run(ip):
+        list = []
         for i in Amun.__test_list:
-            i.run(ip)
+            list.append(i.run(ip))
+        return list

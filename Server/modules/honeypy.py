@@ -47,8 +47,8 @@ class TELNETTest():
                     if i in r:
                         return True  
             return False
-        except socket.timeout: 
-            print("conexao deu timeout")
+        except socket.error: 
+            return False
 
 
 class Honeypy(IPlugin):
@@ -70,5 +70,7 @@ class Honeypy(IPlugin):
 
     @staticmethod
     def run(ip):
+        list = []
         for i in Honeypy.__test_list:
-            i.run(ip)
+            list.append(i.run(ip))
+        return list

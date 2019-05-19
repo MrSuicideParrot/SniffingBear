@@ -1,5 +1,5 @@
 [Core]
-Name = Honeypy honeypot
+Name = honeypy
 Module = honeypy
 
 [Documentation]
