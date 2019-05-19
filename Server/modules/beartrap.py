@@ -29,10 +29,10 @@ class FTPTest():
             b'220 BearTrap-ftpd Service ready\r\n'
         ]
 
-        try:
-            soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            soc.settimeout(2)
-            for j in FTPTest.__port:
+        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        soc.settimeout(2)
+        for j in FTPTest.__port:
+            try:
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -46,9 +46,10 @@ class FTPTest():
                 for i in banners:
                     if i in r:
                         return True  
-            return False
-        except socket.timeout: 
-            print("conexao deu timeout")
+            except socket.error as error:
+                print(error)
+                pass
+        return False
 
 
 class BearTrap(IPlugin):
@@ -70,5 +71,7 @@ class BearTrap(IPlugin):
 
     @staticmethod
     def run(ip):
+        list = []
         for i in BearTrap.__test_list:
-            i.run(ip)
+            list.append(i.run(ip))
+        return list

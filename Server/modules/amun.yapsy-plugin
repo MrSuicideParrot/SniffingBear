@@ -1,5 +1,5 @@
 [Core]
-Name = amun honeypot
+Name = amun
 Module = amun
 
 [Documentation]

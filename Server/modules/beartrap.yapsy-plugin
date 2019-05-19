@@ -1,5 +1,5 @@
 [Core]
-Name = Beartrap honeypot
+Name = beartrap
 Module = beartrap
 
 [Documentation]

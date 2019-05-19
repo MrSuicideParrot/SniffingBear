@@ -1,5 +1,5 @@
 [Core]
-Name = Dionaea honeypot
+Name = dionaea
 Module = dionaea
 
 [Documentation]

@@ -29,10 +29,10 @@ class TELNETTest():
             b'Debian GNU/Linux 7\r\nLogin: '
         ]
 
-        try:
-            soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            soc.settimeout(2)
-            for j in TELNETTest.__port:
+        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        soc.settimeout(2)
+        for j in TELNETTest.__port:
+            try:
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -46,9 +46,9 @@ class TELNETTest():
                 for i in banners:
                     if i in r:
                         return True  
-            return False
-        except socket.timeout: 
-            print("conexao deu timeout")
+            except socket.error:
+                pass
+        return False
 
 
 class Honeypy(IPlugin):
@@ -70,5 +70,7 @@ class Honeypy(IPlugin):
 
     @staticmethod
     def run(ip):
+        list = []
         for i in Honeypy.__test_list:
-            i.run(ip)
+            list.append(i.run(ip))
+        return list
