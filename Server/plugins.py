@@ -8,4 +8,15 @@ simplePluginManager.setPluginPlaces(["modules"])
 simplePluginManager.collectPlugins()
 
 plugins = simplePluginManager.getAllPlugins()
-print(plugins)
+
+def GetPluginsNames():
+    PluginNames=[]
+    for plugin in plugins:
+        PluginNames.append(plugin.name)
+    return PluginNames
+
+def GetPluginDescription(pluginName):
+    for plugin in plugins:
+        if plugin.name == pluginName:
+            return plugin.description
+    return "ERROR"

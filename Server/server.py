@@ -8,7 +8,7 @@ from GrpcProto import connect_pb2
 from GrpcProto import connect_pb2_grpc
 from GrpcProto import scan_pb2
 from GrpcProto import scan_pb2_grpc
-
+import plugins
 
 workerList={}
 scanQueue={}
@@ -30,9 +30,14 @@ class ServerInit(connect_pb2_grpc.ConnectServicer):
 class ClientCom(scan_pb2_grpc.ScanServicer):
 
     def ListModules(self, request, context):
-        #TODO Get Modules
-        result = {'ModulesNames': ["Mod1","Mod2"]}
+        PluginList=plugins.GetPluginsNames()
+        result = {'ModulesNames': PluginList}
         return scan_pb2.ModuleList(**result)
+
+    def ScanDescription(self, request, context):
+        description=plugins.GetPluginDescription(request.Modulo)
+        result = {'Description':description}
+        return scan_pb2.DescriptionResponse(**result)
 
 def start_server():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -67,6 +72,7 @@ def sendScan(worker,range,module):
 
 
 def main():
+    plugins.GetPluginDescription("amun")
     start_server()
 
 if __name__== "__main__":
