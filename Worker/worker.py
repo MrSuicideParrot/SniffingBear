@@ -46,7 +46,6 @@ class ServerScan(scan_pb2_grpc.ScanServicer):
 
     def ScanIp(self, request, context): #TODO
 
-
         print("[*] Scanning "+request.IpRange+" Modulo "+request.Modulo)
 
         result = {'Resposta': "Fostes Scanado"}

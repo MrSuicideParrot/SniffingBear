@@ -20,3 +20,9 @@ def GetPluginDescription(pluginName):
         if plugin.name == pluginName:
             return plugin.description
     return "ERROR"
+
+def checkIfPluginExists(pluginName):
+    for plugin in plugins:
+        if plugin.name == pluginName:
+            return True
+    return False

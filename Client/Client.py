@@ -44,9 +44,32 @@ class MyPrompt(Cmd):
         resp=stub.ScanDescription(message)
         channel.close()
         if resp.Description == "ERROR":
-            print("Module not found\nTry using description <moduleName>")
+            print("Module not found\nType 'help description' to see documentation")
         else:
             print("Description: "+resp.Description)
+
+    def do_scan(self,args):
+        arg = args.split()
+        if len(arg) != 2:
+            print("*** Invalid number of arguments\nType 'help scan' to see documentation")
+            return
+
+        ipRange=arg[0]
+        module=arg[1]
+
+        channel = grpc.insecure_channel(serverIp+":"+serverPort)
+        stub = scan_pb2_grpc.ScanStub(channel)
+        message =scan_pb2.ScanRequest(IpRange=ipRange,Modulo=module)
+        resp=stub.ScanIp(message)
+        channel.close()
+        if resp.Resposta == "ERROR":
+            print("Invalid arguments\nType 'help scan' to see documentation")
+            return
+        print(resp.Resposta)
+
+
+    def help_scan(self):
+        print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a module.\n\tYou can run all the modules by specifying 'all' in the <moduleName> argument.\nUsage: scan <IP> <moduleName>")
 
     do_EOF = do_exit
 
