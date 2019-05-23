@@ -23,7 +23,7 @@ services:
     container_name: mtpot
 
   dionaea:
-    image: dtagdevsec/dionaea
+    image: dtagdevsec/dionaea:1903
     container_name: dionaea
 
   kippodb:
@@ -35,8 +35,8 @@ services:
   kippo:
     image: reuteras/docker-kippo
     container_name: kippo
-    depends_on: kippodb
-    links:  kippodb
+    depends_on: [kippodb]
+    links:  [kippodb]
 
   
 
