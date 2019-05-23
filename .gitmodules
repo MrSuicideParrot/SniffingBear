@@ -1,0 +1,3 @@
+[submodule "Dockers/snare"]
+	path = Dockers/snare
+	url = https://github.com/mushorg/snare.git

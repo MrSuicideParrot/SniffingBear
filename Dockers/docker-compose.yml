@@ -1,4 +1,4 @@
-version: '3'
+version: '2.1'
 
 
 services:
@@ -38,6 +38,76 @@ services:
     depends_on: [kippodb]
     links:  [kippodb]
 
+  telnetlogger:
+    image: txt3rob/docker-telnet-logger
+    container_name: telnetlogger
+
+  tanner_redis:
+    build: ./redis
+    container_name: tanner_redis
+    image: "mushorg/redis:latest"
+    read_only: true
+
+# PHP Sandbox service
+  tanner_phpox:
+    build: ./phpox
+    container_name: tanner_phpox
+    image: "mushorg/phpox:latest"
+    read_only: true
+    tmpfs: "/tmp"
+
+# Tanner API Service
+  tanner_api:
+    build: ./tanner
+    container_name: tanner_api
+    tmpfs:
+     - /tmp/tanner:uid=65534,gid=65534
+     - /var/log/tanner:uid=65534,gid=65534
+    image: "mushorg/tanner:latest"
+    read_only: true
+    command: tannerapi 
+    depends_on:
+     - tanner_redis
+
+# Tanner WEB Service
+  tanner_web:
+    build: ./tanner
+    container_name: tanner_web
+    tmpfs:
+     - /tmp/tanner:uid=65534,gid=65534
+     - /var/log/tanner:uid=65534,gid=65534
+    image: "mushorg/tanner:latest"
+    command: tannerweb
+    read_only: true
+    depends_on:
+     - tanner_redis
+
+# Tanner Service
+  tanner:
+    build: ./tanner
+    container_name: tanner
+    tmpfs:
+     - /tmp/tanner:uid=65534,gid=65534
+     - /var/log/tanner:uid=65534,gid=65534
+     - /opt/tanner/files:uid=65534,gid=65534
+    image: "mushorg/tanner:latest"
+    command: tanner
+    read_only: true
+    depends_on:
+     - tanner_api
+     - tanner_web
+     - tanner_phpox
+  
+  snare:
+    environment:
+      - TANNER = tanner
+    build:
+      context: ./snare
+      args:
+        PAGE_URL: nucc.dcc.fc.up.pt
+    container_name: snare
+    depends_on:
+      - tanner
   
 
   
