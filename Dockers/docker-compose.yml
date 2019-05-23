@@ -1,0 +1,43 @@
+version: '3'
+
+
+services:
+  amun:
+    build: ./amun
+    container_name: amun
+
+  beartrap:
+    build: ./beartrap
+    container_name: breatrap
+
+  cowrie:
+    build: ./cowrie
+    container_name: cowrie
+
+  honeypy:
+    build: ./honeypy
+    container_name: honeypy
+
+  mtpot:
+    build: ./mtpot
+    container_name: mtpot
+
+  dionaea:
+    image: dtagdevsec/dionaea
+    container_name: dionaea
+
+  kippodb:
+    image: mysql
+    container_name: kippodb
+    environment:
+      - MYSQL_ROOT_PASSWORD="somepassword" 
+
+  kippo:
+    image: reuteras/docker-kippo
+    container_name: kippo
+    depends_on: kippodb
+    links:  kippodb
+
+  
+
+  
