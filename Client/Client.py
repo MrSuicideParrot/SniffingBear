@@ -5,6 +5,7 @@ import grpc
 from cmd import Cmd
 from GrpcProto import scan_pb2
 from GrpcProto import scan_pb2_grpc
+import argparse
 
 serverIp='localhost'
 serverPort="46000"
@@ -74,7 +75,17 @@ class MyPrompt(Cmd):
     do_EOF = do_exit
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ServerIp", nargs='?', default="localhost")
+    parser.add_argument("ServerPort", nargs='?', default="46000")
+    args = parser.parse_args()
+    
+    serverIp=args.ServerIp
+    serverPort=args.ServerPort
+    
     MyPrompt().cmdloop()
+    
+    
 
 if __name__== "__main__":
     main()

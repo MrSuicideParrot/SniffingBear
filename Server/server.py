@@ -11,10 +11,12 @@ from GrpcProto import scan_pb2_grpc
 import plugins
 import ipcalc
 import socket
+from threading import Thread
 
 workerList={}
 scanQueue={}
 portaServidor="46000"
+results=[]
 
 class ServerInit(connect_pb2_grpc.ConnectServicer):
 
@@ -56,15 +58,24 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         except:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
-
-        for worker,avaiable in workerList.iteritems(): #TODO Pedidos assincronos?
+      
+        threads = []
+        
+        while len(scanQueue) > 0:  
+            atendido=False 
+            ip,module=scanQueue.popitem() 
+            for worker,avaiable in workerList.iteritems():
                 if avaiable == True:
-                    if len(scanQueue) >0:
-                        ip,module=scanQueue.popitem()
-                        avaiable=False
-                        sendScan(worker,ip,module)
-                        avaiable=True
-
+                    sendScan(worker,ip,module)
+                    atendido=True
+                    break
+            if atendido==False:
+                scanQueue.update({ip:module})
+    
+        for i in range(len(results)): #TODO Mudar resposta
+            x=results.pop()
+            print(x)
+        
         result = {'Resposta':'TEMPORARIO'} #TODO Mudar resposta
         return scan_pb2.ScanResponse(**result)
 
@@ -86,10 +97,26 @@ def start_server():
         print('[*] A Encerrar o Servidor')
 
 def sendScan(worker,range,module):
+    
+    def GetScanResult(done):
+        results.append(done.result().Resposta)
+        replaceValueDic(workerList,worker,True)
+
+    
     channel = grpc.insecure_channel(worker)
+    replaceValueDic(workerList,worker,False)
     stub = scan_pb2_grpc.ScanStub(channel)
     message =scan_pb2.ScanRequest(IpRange=range,Modulo=module)
-    return stub.ScanIp(message)
+    call_future= stub.ScanIp.future(message)
+    call_future.add_done_callback(GetScanResult)
+
+
+
+    
+def replaceValueDic(dicionario, key_to_find, replace):
+    for key in dicionario.keys():
+        if key == key_to_find:
+            dicionario[key] = replace
 
 
 def main():

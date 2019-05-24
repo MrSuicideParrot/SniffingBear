@@ -8,11 +8,12 @@ from GrpcProto import connect_pb2
 from GrpcProto import connect_pb2_grpc
 from GrpcProto import scan_pb2
 from GrpcProto import scan_pb2_grpc
+import plugins
 
 
 serverIp='localhost'
 serverPort="46000"
-#WorkerPort="46001"
+
 
 class ServerInit():
     def __init__(self):
@@ -27,7 +28,7 @@ class ServerInit():
         message =connect_pb2.HelloServer(WorkerIp=messageIp,WorkerPort=messagePort)
         return self.stub.ConnectServer(message)
 
-class ServerScan(scan_pb2_grpc.ScanServicer):
+class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
 
     def start_server(self,WorkerPort):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -45,15 +46,18 @@ class ServerScan(scan_pb2_grpc.ScanServicer):
             print('[*] A Encerrar o Client')
 
     def ScanIp(self, request, context): #TODO
-
-        print("[*] Scanning "+request.IpRange+" Modulo "+request.Modulo)
+        ipToScan=request.IpRange
+        moduleToScan=request.Modulo
+        print("[*] Scanning "+ipToScan+" Modulo "+moduleToScan)
+        
+        if plugins.checkIfPluginExists(moduleToScan)==False: #TODO FAZER DOWNLOAD
+            print("Not yet Implemented")
 
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
 
 
 def main():
-
     client = ServerInit()
     WorkerPort = sys.argv[1]
     print(client.connectToServer("localhost",WorkerPort))
