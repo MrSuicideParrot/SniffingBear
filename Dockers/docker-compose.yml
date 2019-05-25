@@ -1,4 +1,4 @@
-version: '2.1'
+version: '2.3'
 
 
 services:
@@ -34,9 +34,12 @@ services:
     image: txt3rob/docker-telnet-logger
     container_name: telnetlogger
 
+# Tanner Redis Service
   tanner_redis:
     build: ./redis
     container_name: tanner_redis
+    stop_signal: SIGKILL
+    tty: true
     image: "mushorg/redis:latest"
     read_only: true
 
@@ -44,6 +47,8 @@ services:
   tanner_phpox:
     build: ./phpox
     container_name: tanner_phpox
+    stop_signal: SIGKILL
+    tty: true
     image: "mushorg/phpox:latest"
     read_only: true
     tmpfs: "/tmp"
@@ -52,9 +57,11 @@ services:
   tanner_api:
     build: ./tanner
     container_name: tanner_api
+    stop_signal: SIGKILL
     tmpfs:
      - /tmp/tanner:uid=65534,gid=65534
      - /var/log/tanner:uid=65534,gid=65534
+    tty: true
     image: "mushorg/tanner:latest"
     read_only: true
     command: tannerapi 
@@ -65,9 +72,13 @@ services:
   tanner_web:
     build: ./tanner
     container_name: tanner_web
+    stop_signal: SIGKILL
     tmpfs:
      - /tmp/tanner:uid=65534,gid=65534
      - /var/log/tanner:uid=65534,gid=65534
+    tty: true
+    ports:
+     - "8091:8091"
     image: "mushorg/tanner:latest"
     command: tannerweb
     read_only: true
@@ -78,28 +89,31 @@ services:
   tanner:
     build: ./tanner
     container_name: tanner
+    stop_signal: SIGKILL
     tmpfs:
      - /tmp/tanner:uid=65534,gid=65534
      - /var/log/tanner:uid=65534,gid=65534
      - /opt/tanner/files:uid=65534,gid=65534
+    tty: true
+    ports:
+     - "8090:8090"
     image: "mushorg/tanner:latest"
     command: tanner
     read_only: true
     depends_on:
      - tanner_api
      - tanner_web
-     - tanner_phpox
-  
+
+# Snare service
   snare:
-    environment:
-      - TANNER=tanner
-    build:
-      context: ./snare
-      args:
-        PAGE_URL: nucc.dcc.fc.up.pt
+    build: ./snare
     container_name: snare
-    depends_on:
-      - tanner
+    stop_signal: SIGKILL
+    tty: true
+    ports:
+     - "80:80"
+    image: "mushorg/snare:latest"
+
   
 
   
