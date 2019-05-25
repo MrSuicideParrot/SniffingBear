@@ -11,7 +11,7 @@ from GrpcProto import scan_pb2_grpc
 import plugins
 import ipcalc
 import socket
-import argparse
+from threading import Thread
 
 workerList={}
 scanQueue={}
@@ -120,12 +120,6 @@ def replaceValueDic(dicionario, key_to_find, replace):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("ServerPort", nargs='?', default="46000")
-    args = parser.parse_args()
-    portaServidor=args.ServerPort
-
-    
     start_server()
 
 if __name__== "__main__":
