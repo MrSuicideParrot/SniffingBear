@@ -1,0 +1,28 @@
+From 5fc00f866ed1d75f2fb727f9625291ca10015e66 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Andr=C3=A9=20Cirne?= <ancirne@gmail.com>
+Date: Sat, 25 May 2019 13:41:52 +0100
+Subject: [PATCH] PATCH root
+
+---
+ kippo.tac | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kippo.tac b/kippo.tac
+index 92bbdb5..6a5daa2 100644
+--- a/kippo.tac
++++ b/kippo.tac
+@@ -14,9 +14,11 @@ from twisted.application import internet, service
+ from twisted.cred import portal
+ from twisted.conch.ssh import factory, keys
+ 
++"""
+ if os.name == 'posix' and os.getuid() == 0:
+     print 'ERROR: You must not run kippo as root!'
+     sys.exit(1)
++"""
+ 
+ if not os.path.exists('kippo.cfg'):
+     print 'ERROR: kippo.cfg is missing!'
+-- 
+2.21.0
+

@@ -26,20 +26,9 @@ services:
     image: dtagdevsec/dionaea:1903
     container_name: dionaea
 
-  kippodb:
-    image: mysql:5.6
-    container_name: kippodb
-    environment:
-      - MYSQL_ROOT_PASSWORD="somepassword" 
-
   kippo:
-    image: reuteras/docker-kippo
+    build: ./kippo
     container_name: kippo
-    depends_on: [kippodb]
-    links: 
-      - kippodb:mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD="somepassword" 
 
   telnetlogger:
     image: txt3rob/docker-telnet-logger
