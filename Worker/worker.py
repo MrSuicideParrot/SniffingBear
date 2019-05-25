@@ -8,11 +8,31 @@ from GrpcProto import connect_pb2
 from GrpcProto import connect_pb2_grpc
 from GrpcProto import scan_pb2
 from GrpcProto import scan_pb2_grpc
+import os
 import plugins
-
+import masscan
+import pprint
 
 serverIp='localhost'
 serverPort="46000"
+pp = pprint.PrettyPrinter(indent=4)
+
+def doMasscan(ip, ports):
+    if not type(ports) is list:
+        raise Exception("Illegal Arguments")
+ 
+    try:
+        mas = masscan.PortScanner()
+        mas.scan(ip, ports=",".join(str(i) for i in ports))
+
+        hosts_Info = mas.scan_result["scan"]
+        outList = []
+        for key in hosts_Info: 
+            outList.append(key)
+
+        return outList
+    except masscan.masscan.NetworkConnectionError:
+        return []
 
 
 class ServerInit():
@@ -53,11 +73,20 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         if plugins.checkIfPluginExists(moduleToScan)==False: #TODO FAZER DOWNLOAD
             print("Not yet Implemented")
 
+        IP_PORTS = [22,80,8080] #TODO Retrieve this from plugin
+        availableHosts = doMasscan(ipToScan, IP_PORTS)
+
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
 
 
 def main():
+    UUID = os.geteuid()
+    if UUID != 0:
+        print("Please execute this script with root privileges(for masscan)")
+        return
+
+
     client = ServerInit()
     WorkerPort = sys.argv[1]
     print(client.connectToServer("localhost",WorkerPort))
