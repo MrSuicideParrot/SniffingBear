@@ -3,4 +3,3 @@ grpcio-tools
 yapsy
 requests
 ipcalc
-python-masscan==0.1.2

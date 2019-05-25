@@ -1,5 +1,7 @@
 from yapsy.PluginManager import PluginManager
 
+print("Iniciado")
+
 # Build the manager
 simplePluginManager = PluginManager()
 # Tell it the default place(s) where to find plugins
@@ -9,6 +11,12 @@ simplePluginManager.collectPlugins()
 
 plugins = simplePluginManager.getAllPlugins()
 
+def reloadPlugins():
+    global plugins
+    simplePluginManager = PluginManager()
+    simplePluginManager.setPluginPlaces(["modules"])
+    plugins = simplePluginManager.getAllPlugins()
+    print(plugins)
 def GetPluginsNames():
     PluginNames=[]
     for plugin in plugins:
