@@ -30,6 +30,7 @@ class VersionSpecificKippo():
         s.settimeout(5)
 
         for j in VersionSpecificKippo.__port:
+            response = ""
             try:
                 s.connect((ip, j))
                 banner = s.recv(1024)
@@ -37,7 +38,7 @@ class VersionSpecificKippo():
                 response = s.recv(1024)
                 s.close()
             except socket.error:
-                pass
+                continue
 
             if '168430090' in response or 'bad packet length' in response:
                 return True

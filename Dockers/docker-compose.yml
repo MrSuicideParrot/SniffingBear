@@ -17,6 +17,8 @@ services:
   honeypy:
     build: ./honeypy
     container_name: honeypy
+    cap_add:                                                                                                                                                                
+      - NET_ADMIN
 
   mtpot:
     build: ./mtpot
