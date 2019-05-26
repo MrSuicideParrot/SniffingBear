@@ -51,7 +51,7 @@ class MyPrompt(Cmd):
 
     def do_scan(self,args):
         arg = args.split()
-        if len(arg) > 3:
+        if len(arg) > 3 or len(arg)<2:
             print("*** Invalid number of arguments\nType 'help scan' to see documentation")
             return
 
@@ -66,7 +66,6 @@ class MyPrompt(Cmd):
             ports=ports.replace("-p", "")
                 
         
-        print(ports) #TODO
         channel = grpc.insecure_channel(serverIp+":"+serverPort)
         stub = scan_pb2_grpc.ScanStub(channel)
         message =scan_pb2.ScanRequest(IpRange=ipRange,Modulo=module,Ports=ports)
@@ -79,7 +78,7 @@ class MyPrompt(Cmd):
 
 
     def help_scan(self):
-        print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a module.\n\tYou can run all the modules by specifying 'all' in the <moduleName> argument.\nUsage: scan <IP> <moduleName>")
+        print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a module.\n\tYou can run all the modules by specifying 'all' in the <moduleName> argument.\nTo run the scan on custom ports, specify the ports after '-p' and separate them with a comma\nUsage: scan <IP> <moduleName> -p<ports>")
 
 
     def do_customScan(self,args):

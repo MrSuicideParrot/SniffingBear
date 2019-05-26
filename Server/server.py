@@ -50,10 +50,12 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         
         if moduleToScan == "all":#TODO
             moduleToScan='-'.join(plugins.GetPluginsNames())
-            print(moduleToScan)
+            print("aqui"+moduleToScan)
             
         if portasToScan == "all": #TODO get portas do plugin
-            print(portasToScan) 
+            print(portasToScan)
+        
+            
         elif plugins.checkIfPluginExists(moduleToScan)==False:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
@@ -73,7 +75,7 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
             ip,module=scanQueue.popitem() 
             for worker,avaiable in workerList.iteritems():
                 if avaiable == True:
-                    sendScan(worker,ip,module)
+                    sendScan(worker,ip,module,portasToScan)
                     atendido=True
                     break
             if atendido==False:
@@ -103,7 +105,7 @@ def start_server():
         server.stop(0)
         print('[*] A Encerrar o Servidor')
 
-def sendScan(worker,range,module):
+def sendScan(worker,range,module,portas):
     
     def GetScanResult(done):
         results.append(done.result().Resposta)
@@ -113,7 +115,7 @@ def sendScan(worker,range,module):
     channel = grpc.insecure_channel(worker)
     replaceValueDic(workerList,worker,False)
     stub = scan_pb2_grpc.ScanStub(channel)
-    message =scan_pb2.ScanRequest(IpRange=range,Modulo=module)
+    message =scan_pb2.ScanRequest(IpRange=range,Modulo=module,Ports=portas)
     call_future= stub.ScanIp.future(message)
     call_future.add_done_callback(GetScanResult)
 

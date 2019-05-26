@@ -75,6 +75,17 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
     def ScanIp(self, request, context): #TODO
         ipToScan=request.IpRange
         moduleToScan=request.Modulo
+        portasToScan=request.Ports
+        portList=[]
+        
+        if ',' in portasToScan:
+            portasToScan=portasToScan.split(',')
+            portList=list(map(int,portasToScan))
+            
+        else:
+            portList.append(portasToScan)
+            portList=list(map(int,portList))
+            
         print("[*] Scanning "+ipToScan+" Modulo "+moduleToScan) #TODO Check if all plugins
             
         if plugins.checkIfPluginExists(moduleToScan)==False:
@@ -95,8 +106,8 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             
             plugins.reloadPlugins()
             
-        IP_PORTS = [22,80,8080] #TODO Retrieve this from plugin
-        #availableHosts = doMasscan(ipToScan, IP_PORTS)
+        IP_PORTS = portList#[22,80,8080] #TODO Retrieve this from plugin
+        availableHosts = doMasscan(ipToScan, IP_PORTS)
             
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
