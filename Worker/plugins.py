@@ -17,7 +17,7 @@ def pluginsByPort():
     tests = {}
 
     for i in plugins:
-        tests = i.get_test_list()
+        tests = i.plugin_object.get_test_list()
 
         for t in tests:
             p = t.get_port()
