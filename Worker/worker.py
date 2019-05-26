@@ -99,7 +99,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
 
         plugin = plugin.plugin_object
             
-        IP_PORTS = plugin.get_port_list()
+        IP_PORTS = list(plugin.get_port_list())
         availableHosts = doMasscan(ipToScan, IP_PORTS)
         
         resposta = {}
