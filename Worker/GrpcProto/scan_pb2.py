@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nscan.proto\".\n\x0bScanRequest\x12\x0f\n\x07IpRange\x18\x01 \x01(\t\x12\x0e\n\x06Modulo\x18\x02 \x01(\t\" \n\x0cScanResponse\x12\x10\n\x08Resposta\x18\x01 \x01(\t\"$\n\x12\x44\x65scriptionRequest\x12\x0e\n\x06Modulo\x18\x01 \x01(\t\"*\n\x13\x44\x65scriptionResponse\x12\x13\n\x0b\x44\x65scription\x18\x01 \x01(\t\",\n\x0eModulesRequest\x12\x1a\n\x12RequestModulesName\x18\x01 \x01(\t\"\"\n\nModuleList\x12\x14\n\x0cModulesNames\x18\x01 \x03(\t2\x9e\x01\n\x04Scan\x12>\n\x0fScanDescription\x12\x13.DescriptionRequest\x1a\x14.DescriptionResponse\"\x00\x12\'\n\x06ScanIp\x12\x0c.ScanRequest\x1a\r.ScanResponse\"\x00\x12-\n\x0bListModules\x12\x0f.ModulesRequest\x1a\x0b.ModuleList\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nscan.proto\"=\n\x0bScanRequest\x12\x0f\n\x07IpRange\x18\x01 \x01(\t\x12\x0e\n\x06Modulo\x18\x02 \x01(\t\x12\r\n\x05Ports\x18\x03 \x01(\t\" \n\x0cScanResponse\x12\x10\n\x08Resposta\x18\x01 \x01(\t\"$\n\x12\x44\x65scriptionRequest\x12\x0e\n\x06Modulo\x18\x01 \x01(\t\"*\n\x13\x44\x65scriptionResponse\x12\x13\n\x0b\x44\x65scription\x18\x01 \x01(\t\",\n\x0eModulesRequest\x12\x1a\n\x12RequestModulesName\x18\x01 \x01(\t\"\"\n\nModuleList\x12\x14\n\x0cModulesNames\x18\x01 \x03(\t2\x9e\x01\n\x04Scan\x12>\n\x0fScanDescription\x12\x13.DescriptionRequest\x1a\x14.DescriptionResponse\"\x00\x12\'\n\x06ScanIp\x12\x0c.ScanRequest\x1a\r.ScanResponse\"\x00\x12-\n\x0bListModules\x12\x0f.ModulesRequest\x1a\x0b.ModuleList\"\x00\x62\x06proto3')
 )
 
 
@@ -47,6 +47,13 @@ _SCANREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='Ports', full_name='ScanRequest.Ports', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -60,7 +67,7 @@ _SCANREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=14,
-  serialized_end=60,
+  serialized_end=75,
 )
 
 
@@ -90,8 +97,8 @@ _SCANRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=62,
-  serialized_end=94,
+  serialized_start=77,
+  serialized_end=109,
 )
 
 
@@ -121,8 +128,8 @@ _DESCRIPTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=96,
-  serialized_end=132,
+  serialized_start=111,
+  serialized_end=147,
 )
 
 
@@ -152,8 +159,8 @@ _DESCRIPTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=134,
-  serialized_end=176,
+  serialized_start=149,
+  serialized_end=191,
 )
 
 
@@ -183,8 +190,8 @@ _MODULESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=178,
-  serialized_end=222,
+  serialized_start=193,
+  serialized_end=237,
 )
 
 
@@ -214,8 +221,8 @@ _MODULELIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=224,
-  serialized_end=258,
+  serialized_start=239,
+  serialized_end=273,
 )
 
 DESCRIPTOR.message_types_by_name['ScanRequest'] = _SCANREQUEST
@@ -276,8 +283,8 @@ _SCAN = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=261,
-  serialized_end=419,
+  serialized_start=276,
+  serialized_end=434,
   methods=[
   _descriptor.MethodDescriptor(
     name='ScanDescription',

@@ -60,10 +60,16 @@ class MyPrompt(Cmd):
         ports="all"
         if len(arg)==3:
             ports=arg[2]
-        print(ports)
+            if "-p" not in ports:
+                print("*** Invalid arguments\nType 'help scan' to see documentation")
+                return
+            ports=ports.replace("-p", "")
+                
+        
+        print(ports) #TODO
         channel = grpc.insecure_channel(serverIp+":"+serverPort)
         stub = scan_pb2_grpc.ScanStub(channel)
-        message =scan_pb2.ScanRequest(IpRange=ipRange,Modulo=module)
+        message =scan_pb2.ScanRequest(IpRange=ipRange,Modulo=module,Ports=ports)
         resp=stub.ScanIp(message)
         channel.close()
         if resp.Resposta == "ERROR":
@@ -75,6 +81,22 @@ class MyPrompt(Cmd):
     def help_scan(self):
         print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a module.\n\tYou can run all the modules by specifying 'all' in the <moduleName> argument.\nUsage: scan <IP> <moduleName>")
 
+
+    def do_customScan(self,args):
+        arg = args.split()
+        
+        if len(arg) > 2:
+            print("*** Invalid number of arguments\nType 'help scan' to see documentation")
+            return
+        
+        ipRange=arg[0]
+        moduleUrl=arg[1]
+        channel = grpc.insecure_channel(serverIp+":"+serverPort)
+        
+    def help_customScan(self):
+        print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a custom module.\n\tPlease provide a module url in the <moduleUrl> argument.\nUsage: customScan <IP> <moduleUrl>")
+
+    
     do_EOF = do_exit
 
 def main():
