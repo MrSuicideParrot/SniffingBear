@@ -51,13 +51,16 @@ class MyPrompt(Cmd):
 
     def do_scan(self,args):
         arg = args.split()
-        if len(arg) != 2:
+        if len(arg) > 3:
             print("*** Invalid number of arguments\nType 'help scan' to see documentation")
             return
 
         ipRange=arg[0]
         module=arg[1]
-
+        ports="all"
+        if len(arg)==3:
+            ports=arg[2]
+        print(ports)
         channel = grpc.insecure_channel(serverIp+":"+serverPort)
         stub = scan_pb2_grpc.ScanStub(channel)
         message =scan_pb2.ScanRequest(IpRange=ipRange,Modulo=module)

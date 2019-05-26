@@ -46,8 +46,12 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
     def ScanIp(self, request, context):
         ipToScan=request.IpRange
         moduleToScan=request.Modulo
-
-        if plugins.checkIfPluginExists(moduleToScan)==False:
+        
+        if moduleToScan == "all":
+            moduleToScan='-'.join(plugins.GetPluginsNames())
+            print(moduleToScan)
+            
+        elif plugins.checkIfPluginExists(moduleToScan)==False:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
         
