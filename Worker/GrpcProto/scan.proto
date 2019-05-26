@@ -8,6 +8,7 @@ service Scan{
 message ScanRequest{
     string IpRange = 1;
     string Modulo = 2;
+    string Ports=3;
 }
 message ScanResponse{
     string Resposta = 1;
