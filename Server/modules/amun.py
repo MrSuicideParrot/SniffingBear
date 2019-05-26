@@ -78,10 +78,10 @@ class IMAPTest():
             b'a200 Lotus Domino 6.5.4 7.0.2 IMAP4\r\n'
         ]
 
-        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        soc.settimeout(2)
         for j in IMAPTest.__port:
             try:
+                soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                soc.settimeout(2)
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -171,3 +171,7 @@ class Amun(IPlugin):
         for i in Amun.__test_list:
             list.append(i.run(ip))
         return list
+
+if __name__ == "__main__":
+    ip = "172.17.0.2"
+    print(Amun.run(ip))

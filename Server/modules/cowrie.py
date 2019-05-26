@@ -48,7 +48,7 @@ class DefaultSSHVersion:
                 socket.setdefaulttimeout(5)
                 sockfd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sockfd.connect((ip, p))
-                banner = sockfd.recv(1024)
+                banner = sockfd.recv(1024)[:-2]
 
                 if banner in DEFAULT_KIPPOCOWRIE_BANNERS:
                     return True
@@ -162,3 +162,6 @@ class Cowrie(IPlugin):
             result.append(i.run(ip))
         return result
 
+if __name__ == "__main__":
+    ip = "172.17.0.2"
+    print(Cowrie.run(ip))

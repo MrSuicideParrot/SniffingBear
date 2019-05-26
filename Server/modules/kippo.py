@@ -1,8 +1,10 @@
 from yapsy.IPlugin import IPlugin
 import socket
+#from pwnlib.tubes.ssh import ssh
+#from hashlib import sha256
 
 
-class VersionSpecificKippo():
+class VersionSpecificKippo:
     """Name"""
     __name = "Kippo Error Message Bug Test"
 
@@ -10,7 +12,7 @@ class VersionSpecificKippo():
     __description = "Tests presence of an obsolte version of kippo"
 
     """ Port nedded on the test"""
-    __port = [23, 992]
+    __port = [22, 2222]
 
     @staticmethod
     def get_name():
@@ -43,8 +45,48 @@ class VersionSpecificKippo():
                 return True
 
         return False
+"""
+class KippoShadow:
+    
+    __name = "Kippo shadow verifie"
+
+    
+    __description = "Tests presence of kippo"
 
 
+    __port = [22, 2222]
+
+    @staticmethod
+    def get_name():
+        return KippoShadow.__name
+
+    @staticmethod
+    def get_description():
+        return KippoShadow.__description
+
+    @staticmethod
+    def get_port():
+        return KippoShadow.__port
+
+    @staticmethod
+    def run(ip):
+        for j in KippoShadow.__port:
+            try:
+                s = ssh('root', ip, j, '123456')
+
+                data = s.download_data('/etc/shadow')
+                s.close()
+
+                print(sha256(data).hexdigest())
+
+                return True
+                
+            except Exception as e:
+                print(e)
+                continue
+
+        return False
+"""
 class Kippo(IPlugin):
 
     """ List of tests """
@@ -68,3 +110,7 @@ class Kippo(IPlugin):
         for i in Kippo.__test_list:
             result.append(i.run(ip))
         return result
+
+if __name__ == "__main__":
+    ip = "172.17.0.3"
+    print(Kippo.run(ip))
