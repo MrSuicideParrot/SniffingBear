@@ -81,7 +81,6 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             print('Downloading module '+moduleToScan)
             files=[]
             files.append(moduleToScan + ".py")
-            files.append(moduleToScan + ".pyc")
             files.append(moduleToScan + ".yapsy-plugin")
             
             for filetmp in files:
