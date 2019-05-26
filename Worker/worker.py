@@ -78,10 +78,12 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         portasToScan=request.Ports
         portList=[]
         
-        if ',' in portasToScan:
+        if portasToScan=="all": #TODO LADO DO SERVER
+            print("TODO")
+            
+        elif ',' in portasToScan:
             portasToScan=portasToScan.split(',')
             portList=list(map(int,portasToScan))
-            
         else:
             portList.append(portasToScan)
             portList=list(map(int,portList))
@@ -105,8 +107,10 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
                 os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
             
             plugins.reloadPlugins()
-            
-        IP_PORTS = list(plugin.get_port_list())
+        
+        plugin=plugins.getPluginIfExists(moduleToScan)    
+        
+        IP_PORTS = portList#list(plugin.get_port_list())
         availableHosts = doMasscan(ipToScan, IP_PORTS)
         
         resposta = {}

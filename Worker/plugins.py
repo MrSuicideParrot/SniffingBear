@@ -32,7 +32,6 @@ def reloadPlugins():
     simplePluginManager.setPluginPlaces(["modules"])
     simplePluginManager.collectPlugins()
     plugins = simplePluginManager.getAllPlugins()
-    print(plugins)
     pluginsByPort()
 
 def GetPluginsNames():
