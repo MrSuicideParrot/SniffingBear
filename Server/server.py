@@ -80,11 +80,15 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
                     break
             if atendido==False:
                 scanQueue.update({ip:module})
-    
+  
+        while(True):
+            if results:
+                break
+            
         for i in range(len(results)): #TODO Mudar resposta
             x=results.pop()
             print(x)
-        
+    
         result = {'Resposta':'TEMPORARIO'} #TODO Mudar resposta
         return scan_pb2.ScanResponse(**result)
 
