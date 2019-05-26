@@ -110,8 +110,6 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
                 
                     st = os.stat('./modules/'+filetmp)
                     os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
-                    
-            
             
         plugins.reloadPlugins()
         
@@ -120,6 +118,8 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         
         for module in moduleList:
             print("[*] Scanning "+ipToScan+" Modulo "+module)
+            if module == "telnetlogger": #TODO RESOLVER
+                continue
             plugin = plugins.getPluginIfExists(module) 
             plugin = plugin.plugin_object
             pluginsList.append(plugin)
