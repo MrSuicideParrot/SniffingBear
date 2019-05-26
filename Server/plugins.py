@@ -1,7 +1,5 @@
 from yapsy.PluginManager import PluginManager
 
-print("Iniciado")
-
 # Build the manager
 simplePluginManager = PluginManager()
 # Tell it the default place(s) where to find plugins

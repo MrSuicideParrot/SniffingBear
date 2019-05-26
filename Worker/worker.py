@@ -108,11 +108,18 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             
             plugins.reloadPlugins()
         
-        plugin=plugins.getPluginIfExists(moduleToScan)    
+        plugin = plugins.getPluginIfExists(moduleToScan)    
+        plugin = plugin.plugin_object
         
-        IP_PORTS = portList#list(plugin.get_port_list())
+        IP_PORTS = list(plugin.get_port_list())
+        IP_PORTS = list(set(IP_PORTS).intersection(portList))
+        
+        if len(IP_PORTS) == 0:
+            print("No matching ports")
+            result = {'Resposta': "No matching ports"}
+            return scan_pb2.ScanResponse(**result)
+        
         availableHosts = doMasscan(ipToScan, IP_PORTS)
-        
         resposta = {}
         for i in availableHosts:
             resposta[i] = plugin.run(i)

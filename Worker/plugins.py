@@ -1,6 +1,5 @@
 from yapsy.PluginManager import PluginManager
 
-print("Iniciado")
 
 # Build the manager
 simplePluginManager = PluginManager()
