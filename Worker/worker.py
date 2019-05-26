@@ -91,9 +91,8 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
                 with open('./modules/'+filetmp, 'wb') as f:  
                     f.write(datatowrite)
             
-                if ".pyc" not in filetmp:
-                    st = os.stat('./modules/'+filetmp)
-                    os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
+                st = os.stat('./modules/'+filetmp)
+                os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
             
             plugins.reloadPlugins()
 
