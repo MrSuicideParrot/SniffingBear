@@ -2,5 +2,5 @@ grpcio
 grpcio-tools
 yapsy
 requests
-ipcalc
+netaddr
 python-masscan==0.1.2
