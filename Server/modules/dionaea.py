@@ -29,10 +29,10 @@ class FTPTest():
             b'220 DiskStation FTP server ready.\r\n'
         ]
         
-        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        soc.settimeout(2)
         for j in FTPTest.__port:
             try:
+                soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                soc.settimeout(2)
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])

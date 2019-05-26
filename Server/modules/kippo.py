@@ -26,12 +26,11 @@ class VersionSpecificKippo():
 
     @staticmethod
     def run(ip):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(5)
-
         for j in VersionSpecificKippo.__port:
             response = ""
             try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.settimeout(5)
                 s.connect((ip, j))
                 banner = s.recv(1024)
                 s.send(b'\n\n\n\n\n\n\n\n')

@@ -29,10 +29,10 @@ class FTPTest():
             b'220 BearTrap-ftpd Service ready\r\n'
         ]
 
-        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        soc.settimeout(2)
         for j in FTPTest.__port:
             try:
+                soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                soc.settimeout(2)
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
@@ -47,8 +47,8 @@ class FTPTest():
                     if i in r:
                         return True  
             except socket.error as error:
-                print(error)
                 pass
+
         return False
 
 

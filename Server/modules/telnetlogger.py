@@ -29,10 +29,10 @@ class TELNETTest():
             b'\xff\xfb\x03\xff\xfb\x01\xff\xfd\x1f\xff\xfd\x18\r\nlogin: '
         ]
 
-        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        soc.settimeout(2)
         for j in TELNETTest.__port:
             try:
+                soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                soc.settimeout(2)
                 soc.connect((ip, j))
 
                 max_length = len(banners[0])
