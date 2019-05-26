@@ -9,9 +9,9 @@ from GrpcProto import connect_pb2_grpc
 from GrpcProto import scan_pb2
 from GrpcProto import scan_pb2_grpc
 import plugins
-import ipcalc
 import socket
 import argparse
+import netaddr
 
 workerList={}
 scanQueue={}
@@ -59,30 +59,37 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         elif plugins.checkIfPluginExists(moduleToScan)==False:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
+        ipScanList=[]
+        dividir=0
         
         try:
-            for x in ipcalc.Network(ipToScan):
-                tmp={str(x):moduleToScan}
-                scanQueue.update(tmp)
+            for x in netaddr.IPNetwork(ipToScan):
+                ipScanList.append(str(x))
+                
+            dividir=len(ipScanList)/len(workerList)
+            
         except:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
       
-        threads = []
-        
-        while len(scanQueue) > 0:  
-            atendido=False 
-            ip,module=scanQueue.popitem() 
-            for worker,avaiable in workerList.iteritems():
+        dividirInit=0
+        dividirFim=dividir-1
+        workersize=len(workerList)
+        for worker,avaiable in workerList.iteritems():
+            print("Dividir Range "+ipScanList[dividirInit]+" "+ipScanList[dividirFim])
+            ips = netaddr.IPRange(ipScanList[dividirInit], ipScanList[dividirFim])
+           
+            for cidr in ips.cidrs():
                 if avaiable == True:
-                    sendScan(worker,ip,module,portasToScan)
-                    atendido=True
+                    
+                    sendScan(worker,str(cidr),moduleToScan,portasToScan)
                     break
-            if atendido==False:
-                scanQueue.update({ip:module})
-  
+            dividirInit=dividirInit+dividir
+            dividirFim=dividirFim+dividir 
+        
+        
         while(True):
-            if results:
+            if len(results) == workersize:
                 break
             
         for i in range(len(results)): #TODO Mudar resposta

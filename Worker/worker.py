@@ -123,7 +123,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         resposta = {}
         for i in availableHosts:
             resposta[i] = plugin.run(i)
-
+        print("Done")
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
 
@@ -133,7 +133,7 @@ def main():
     parser.add_argument("ServerIp", nargs='?', default="localhost")
     parser.add_argument("ServerPort", nargs='?', default="46000")
     args = parser.parse_args()
-    
+
     WorkerPort = args.WorkerPort
     serverIp=args.ServerIp
     serverPort=args.ServerPort
@@ -145,7 +145,7 @@ def main():
     
     client = ServerInit()
     
-    print(client.connectToServer("localhost",WorkerPort))
+    client.connectToServer("localhost",WorkerPort)
 
     print("[*] Client Server Started")
     scan = ServerScan()
