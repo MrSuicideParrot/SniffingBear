@@ -75,8 +75,8 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
     def ScanIp(self, request, context): #TODO
         ipToScan=request.IpRange
         moduleToScan=request.Modulo
-        print("[*] Scanning "+ipToScan+" Modulo "+moduleToScan)
-        
+        print("[*] Scanning "+ipToScan+" Modulo "+moduleToScan) #TODO Check if all plugins
+            
         if plugins.checkIfPluginExists(moduleToScan)==False:
             print('Downloading module '+moduleToScan)
             files=[]
@@ -85,7 +85,6 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             files.append(moduleToScan + ".yapsy-plugin")
             
             for filetmp in files:
-            
                 filedata = urllib2.urlopen(defaultURL+filetmp)  
                 datatowrite = filedata.read()
 
@@ -99,7 +98,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             plugins.reloadPlugins()
             
         IP_PORTS = [22,80,8080] #TODO Retrieve this from plugin
-        availableHosts = doMasscan(ipToScan, IP_PORTS)
+        #availableHosts = doMasscan(ipToScan, IP_PORTS)
             
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
