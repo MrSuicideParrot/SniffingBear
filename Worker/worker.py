@@ -77,42 +77,59 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         moduleToScan=request.Modulo
         portasToScan=request.Ports
         portList=[]
+        moduleList=[]
         
-        if portasToScan=="all": #TODO LADO DO SERVER
-            print("TODO")
-            
+        if ',' in moduleToScan:
+            moduleList=moduleToScan.split(',')
+        else:
+            moduleList.append(moduleToScan)
+        
+        if  portasToScan == "all":
+            pass
         elif ',' in portasToScan:
             portasToScan=portasToScan.split(',')
             portList=list(map(int,portasToScan))
         else:
             portList.append(portasToScan)
             portList=list(map(int,portList))
+        
+        for module in moduleList:    
             
-        print("[*] Scanning "+ipToScan+" Modulo "+moduleToScan) #TODO Check if all plugins
-            
-        if plugins.checkIfPluginExists(moduleToScan)==False:
-            print('Downloading module '+moduleToScan)
-            files=[]
-            files.append(moduleToScan + ".py")
-            files.append(moduleToScan + ".yapsy-plugin")
-            
-            for filetmp in files:
-                filedata = urllib2.urlopen(defaultURL+filetmp)  
-                datatowrite = filedata.read()
+            if plugins.checkIfPluginExists(module)==False:
+                print('Downloading module '+module)
+                files=[]
+                files.append(module + ".py")
+                files.append(module + ".yapsy-plugin")
+                
+                for filetmp in files:
+                    filedata = urllib2.urlopen(defaultURL+filetmp)  
+                    datatowrite = filedata.read()
 
-                with open('./modules/'+filetmp, 'wb') as f:  
-                    f.write(datatowrite)
+                    with open('./modules/'+filetmp, 'wb') as f:  
+                        f.write(datatowrite)
+                
+                    st = os.stat('./modules/'+filetmp)
+                    os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
+                    
             
-                st = os.stat('./modules/'+filetmp)
-                os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
             
-            plugins.reloadPlugins()
+        plugins.reloadPlugins()
         
-        plugin = plugins.getPluginIfExists(moduleToScan)    
-        plugin = plugin.plugin_object
+        IP_PORTS=[]
+        pluginsList=[]
         
-        IP_PORTS = list(plugin.get_port_list())
-        IP_PORTS = list(set(IP_PORTS).intersection(portList))
+        for module in moduleList:
+            print("[*] Scanning "+ipToScan+" Modulo "+module)
+            plugin = plugins.getPluginIfExists(module) 
+            plugin = plugin.plugin_object
+            pluginsList.append(plugin)
+            
+            if portasToScan != "all":
+                portTMP=[]
+                portTMP.extend(plugin.get_port_list())
+                IP_PORTS.extend(list(set(portTMP).intersection(portList)))
+            else:
+                IP_PORTS.extend(plugin.get_port_list())
         
         if len(IP_PORTS) == 0:
             print("No matching ports")
@@ -122,7 +139,8 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         availableHosts = doMasscan(ipToScan, IP_PORTS)
         resposta = {}
         for i in availableHosts:
-            resposta[i] = plugin.run(i)
+            for plugin in pluginsList:
+                resposta[i] = plugin.run(i)
         print("Done")
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)

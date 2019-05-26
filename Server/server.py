@@ -48,19 +48,22 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         moduleToScan=request.Modulo
         portasToScan=request.Ports
         
-        if moduleToScan == "all":#TODO
-            moduleToScan='-'.join(plugins.GetPluginsNames())
-            print("aqui"+moduleToScan)
-            
-        if portasToScan == "all": #TODO get portas do plugin
-            print(portasToScan)
         
+            
+        
+        if moduleToScan == "all":#TODO
+            moduleToScan=','.join(plugins.GetPluginsNames())
+            print("aqui"+moduleToScan)
             
         elif plugins.checkIfPluginExists(moduleToScan)==False:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
         ipScanList=[]
         dividir=0
+        
+        if portasToScan == "all": #TODO get portas do plugin
+            print(portasToScan)
+        
         
         try:
             for x in netaddr.IPNetwork(ipToScan):
