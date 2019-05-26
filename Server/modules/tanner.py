@@ -30,6 +30,7 @@ def randomString(n):
     return ''.join(random.choice(string.ascii_uppercase + string.digits)
                    for _ in range(n))
 
+
 class Ret:
     def __init__(self):
         self.result = False
@@ -123,11 +124,18 @@ class RFIteste():
         return RFIteste.__port
 
     @staticmethod
+    def get_ip():
+        return ([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
+                              if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)),
+                                                                    s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET,
+                                                                                                                           socket.SOCK_DGRAM)]][0][1]]) if l][0][0])
+
+    @staticmethod
     def run(ip):
         path = randomString(random.randrange(10))
         args = randomString(random.randrange(5))
         ident = randomString(random.randrange(10))
-        myIp = socket.gethostbyname(socket.getfqdn())
+        myIp = RFIteste.get_ip()
 
         resp = Ret()
 
@@ -169,7 +177,8 @@ class PHPteste():
     def run(ip):
         path = randomString(random.randrange(10))
         args = randomString(random.randrange(5))
-        r = requests.get("http://%s/%s" % (ip, path), params={args: 'echo(system("uptime"))'})
+        r = requests.get("http://%s/%s" % (ip, path),
+                         params={args: 'echo(system("uptime"))'})
 
         if r.status_code == 200 and len(r.text) == 0:
             return True
@@ -207,8 +216,8 @@ class SQLiteste():
                          params={args: '1 UNION SELECT 1,2,3,4'})
 
         response = ['You have an error in your SQL syntax; check the manual',
-                                'that corresponds to your MySQL server version for the',
-                                'right syntax to use near  at line 1']
+                    'that corresponds to your MySQL server version for the',
+                    'right syntax to use near  at line 1']
 
         resp = True
 
@@ -221,7 +230,7 @@ class SQLiteste():
 
 class Tanner(IPlugin):
     """ List of tests """
-    __test_list = [DefaultNginxVersion, PHPteste, SQLiteste, RFIteste,]
+    __test_list = [DefaultNginxVersion, PHPteste, SQLiteste, RFIteste, ]
 
     @staticmethod
     def get_test_list():
