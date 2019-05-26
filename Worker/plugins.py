@@ -9,9 +9,6 @@ simplePluginManager.setPluginPlaces(["modules"])
 # Load all plugins
 simplePluginManager.collectPlugins()
 
-plugins = simplePluginManager.getAllPlugins()
-tests_by_port = {}
-pluginsByPort()
 
 def pluginsByPort():
     global plugins
@@ -61,3 +58,7 @@ def getPluginIfExists(pluginName):
         if plugin.name == pluginName:
             return plugin
     return None
+
+plugins = simplePluginManager.getAllPlugins()
+tests_by_port = {}
+pluginsByPort()
