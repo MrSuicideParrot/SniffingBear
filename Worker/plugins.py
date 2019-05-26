@@ -10,6 +10,24 @@ simplePluginManager.setPluginPlaces(["modules"])
 simplePluginManager.collectPlugins()
 
 plugins = simplePluginManager.getAllPlugins()
+tests_by_port = {}
+pluginsByPort()
+
+def pluginsByPort():
+    global plugins
+    global tests_by_port
+
+    tests = {}
+
+    for i in plugins:
+        tests = i.get_test_list()
+
+        for t in tests:
+            p = t.get_port()
+            if p in tests:
+                tests[p].append(t)
+
+    tests_by_port = tests
 
 def reloadPlugins():
     global plugins
@@ -17,6 +35,8 @@ def reloadPlugins():
     simplePluginManager.setPluginPlaces(["modules"])
     plugins = simplePluginManager.getAllPlugins()
     print(plugins)
+    pluginsByPort()
+
 def GetPluginsNames():
     PluginNames=[]
     for plugin in plugins:
@@ -34,3 +54,9 @@ def checkIfPluginExists(pluginName):
         if plugin.name == pluginName:
             return True
     return False
+
+def getPluginIfExists(pluginName):
+    for plugin in plugins:
+        if plugin.name == pluginName:
+            return plugin
+    return None

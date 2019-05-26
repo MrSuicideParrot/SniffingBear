@@ -97,10 +97,18 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
                     os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
             
             plugins.reloadPlugins()
+
+        plugin = plugins.getPluginIfExists(moduleToScan)
+
+        plugin = plugin.plugin_object
             
-        IP_PORTS = [22,80,8080] #TODO Retrieve this from plugin
+        IP_PORTS = plugin.get_port_list()
         availableHosts = doMasscan(ipToScan, IP_PORTS)
-            
+        
+        resposta = {}
+        for i in availableHosts:
+            resposta[i] = plugin.run(i)
+
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
 
