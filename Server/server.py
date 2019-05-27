@@ -47,55 +47,21 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         ipToScan=request.IpRange
         moduleToScan=request.Modulo
         portasToScan=request.Ports
-        
-        if moduleToScan == "all":#TODO
+
+        if moduleToScan == "all":
             moduleToScan=','.join(plugins.GetPluginsNames())
             print("aqui"+moduleToScan)
-            
+
         elif plugins.checkIfPluginExists(moduleToScan)==False:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
-        ipScanList=[]
-        dividir=0
-        
-        if portasToScan == "all": #TODO get portas do plugin
-            print(portasToScan)
-        
-        
-        try:
-            for x in netaddr.IPNetwork(ipToScan):
-                ipScanList.append(str(x))
-                
-            dividir=len(ipScanList)/len(workerList)
-            
-        except:
-            result = {'Resposta':'ERROR'}
-            return scan_pb2.ScanResponse(**result)
-      
-        dividirInit=0
-        dividirFim=dividir-1
-        workersize=len(workerList)
-        for worker,avaiable in workerList.iteritems():
-            print("Dividir Range "+ipScanList[dividirInit]+" "+ipScanList[dividirFim])
-            ips = netaddr.IPRange(ipScanList[dividirInit], ipScanList[dividirFim])
-           
-            for cidr in ips.cidrs():
-                if avaiable == True:
-                    
-                    sendScan(worker,str(cidr),moduleToScan,portasToScan)
-                    break
-            dividirInit=dividirInit+dividir
-            dividirFim=dividirFim+dividir 
-        
-        
-        while(True):
-            if len(results) == workersize:
-                break
-            
+
+        sendScanToWorker(ipToScan,moduleToScan,portasToScan,False)
+
         for i in range(len(results)): #TODO Mudar resposta
             x=results.pop()
             print(x)
-    
+
         result = {'Resposta':'TEMPORARIO'} #TODO Mudar resposta
         return scan_pb2.ScanResponse(**result)
 
@@ -103,7 +69,41 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         ipToScan=request.IpRange
         moduleUrl=request.ModuloUrl
 
-        print(moduleUrl)
+
+def sendScanToWorker(ipToScan,moduleToScan,portasToScan,isUrl):
+    ipScanList=[]
+    dividir=0
+    try:
+        for x in netaddr.IPNetwork(ipToScan):
+            ipScanList.append(str(x))
+        dividir=len(ipScanList)/len(workerList)
+    except:
+        if isUrl == False:
+            result = {'Resposta':'ERROR'}
+            return scan_pb2.ScanResponse(**result)
+
+        result = {'RespostaCustomScan':'ERROR'}
+        return scan_pb2.CustomScanResponse(**result)
+
+    dividirInit=0
+    dividirFim=dividir-1
+    workersize=len(workerList)
+    for worker,avaiable in workerList.iteritems():
+        print("Dividir Range "+ipScanList[dividirInit]+" "+ipScanList[dividirFim])
+        ips = netaddr.IPRange(ipScanList[dividirInit], ipScanList[dividirFim])
+        for cidr in ips.cidrs():
+            if avaiable == True:
+                if isUrl == False:
+                    sendScan(worker,str(cidr),moduleToScan,portasToScan)
+                else:
+                    sendCustomScan(worker,str(cidr),moduleToScan)
+                break
+        dividirInit=dividirInit+dividir
+        dividirFim=dividirFim+dividir
+
+        while(True):
+            if len(results) == workersize:
+                break
 
 
 def start_server():
@@ -137,7 +137,18 @@ def sendScan(worker,range,module,portas):
     call_future= stub.ScanIp.future(message)
     call_future.add_done_callback(GetScanResult)
 
+def sendCustomScan(worker,range,moduleUrl):
 
+    def GetScanResult(done):
+        results.append(done.result().RespostaCustomScan)
+        replaceValueDic(workerList,worker,True)
+
+    channel = grpc.insecure_channel(worker)
+    replaceValueDic(workerList,worker,False)
+    stub = scan_pb2_grpc.ScanStub(channel)
+    message =scan_pb2.CustomScanRequest(IpRange=range,ModuloUrl=moduleUrl)
+    call_future= stub.CustomScan.future(message)
+    call_future.add_done_callback(GetScanResult)
 
     
 def replaceValueDic(dicionario, key_to_find, replace):
