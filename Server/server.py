@@ -24,9 +24,13 @@ class ServerInit(connect_pb2_grpc.ConnectServicer):
         ipWorker = request.WorkerIp
         portWorker = request.WorkerPort
         addrs=ipWorker+":"+portWorker
-        tmp={str(addrs):True}
-        workerList.update(tmp)
-        print("\n[*] Nova Ligacao: "+addrs)
+        if addrs in workerList:
+            workerList.pop(addrs)
+            print("\n[*] Terminou Ligacao: "+addrs)
+        else :
+            tmp={str(addrs):True}
+            workerList.update(tmp)
+            print("\n[*] Nova Ligacao: "+addrs)
 
         result = {'Confirmation': True}
         return connect_pb2.HelloWorker(**result)
@@ -90,7 +94,6 @@ def sendScanToWorker(ipToScan,moduleToScan,portasToScan,isUrl):
         if isUrl == False:
             result = {'Resposta':'ERROR'}
             return scan_pb2.ScanResponse(**result)
-
         result = {'RespostaCustomScan':'ERROR'}
         return scan_pb2.CustomScanResponse(**result)
 
@@ -105,13 +108,15 @@ def sendScanToWorker(ipToScan,moduleToScan,portasToScan,isUrl):
                 if isUrl == False:
                     sendScan(worker,str(cidr),moduleToScan,portasToScan)
                 else:
+        
                     sendCustomScan(worker,str(cidr),moduleToScan)
-                break
+        if len(ipScanList)==1:
+            break
         dividirInit=dividirInit+dividir
         dividirFim=dividirFim+dividir
 
         while(True):
-            if len(results) == workersize:
+            if len(results) == workersize or len(results) > 0 and len(ipScanList):
                 break
 
 

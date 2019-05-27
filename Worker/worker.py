@@ -15,6 +15,7 @@ import os
 import stat
 import masscan
 import pprint
+import socket
 
 pp = pprint.PrettyPrinter(indent=4)
 serverIp='localhost'
@@ -60,7 +61,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
     def start_server(self,WorkerPort):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         scan_pb2_grpc.add_ScanServicer_to_server(ServerScan(),server)
-        server.add_insecure_port('[::]:{}'.format(WorkerPort))
+        server.add_insecure_port('0.0.0.0:{}'.format(WorkerPort))
 
         server.start()
         print ('[*] Esperando comandos')
@@ -192,6 +193,9 @@ def main():
     parser.add_argument("ServerIp", nargs='?', default="localhost")
     parser.add_argument("ServerPort", nargs='?', default="46000")
     args = parser.parse_args()
+    
+    global serverIp
+    global serverPort
 
     WorkerPort = args.WorkerPort
     serverIp=args.ServerIp
@@ -203,14 +207,21 @@ def main():
         return
     
     client = ServerInit()
-    
-    client.connectToServer("localhost",WorkerPort)
+    myip=getIP()
+    print(myip)
+    client.connectToServer(myip,WorkerPort)
 
     print("[*] Client Server Started")
     scan = ServerScan()
     scan.start_server(WorkerPort)
     print("[*] Acabou")
+    client.connectToServer(myip,WorkerPort)
 
+def getIP():
+    return ([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
+    if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)),
+    s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET,
+    socket.SOCK_DGRAM)]][0][1]]) if l][0][0])
 
 if __name__== "__main__":
     main()
