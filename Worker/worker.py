@@ -215,6 +215,7 @@ def main():
     scan = ServerScan()
     scan.start_server(WorkerPort)
     print("[*] Acabou")
+    client.connectToServer(myip,WorkerPort)
 
 def getIP():
     return ([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
