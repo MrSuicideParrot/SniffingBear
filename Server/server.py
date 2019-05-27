@@ -62,11 +62,12 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
 
         sendScanToWorker(ipToScan,moduleToScan,portasToScan,False)
 
+        resp=""
         for i in range(len(results)): #TODO Mudar resposta
             x=results.pop()
-            print(x)
+            resp=resp+";"+x
 
-        result = {'Resposta':'TEMPORARIO'} #TODO Mudar resposta
+        result = {'Resposta':resp} #TODO Mudar resposta
         return scan_pb2.ScanResponse(**result)
 
     def CustomScan(self, request, context):
@@ -75,11 +76,12 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         
         sendScanToWorker(ipToScan,moduleUrl,[],True)
         
+        resp=""
         for i in range(len(results)): #TODO Mudar resposta
             x=results.pop()
-            print(x)
+            resp=resp+";"+x
         
-        result = {'RespostaCustomScan':'TEMPORARIO'} #TODO Mudar resposta
+        result = {'RespostaCustomScan':resp} #TODO Mudar resposta
         return scan_pb2.CustomScanResponse(**result)
 
 
@@ -100,6 +102,7 @@ def sendScanToWorker(ipToScan,moduleToScan,portasToScan,isUrl):
     dividirInit=0
     dividirFim=dividir-1
     workersize=len(workerList)
+    print(workersize)
     for worker,avaiable in workerList.iteritems():
         print("Dividir Range "+ipScanList[dividirInit]+" "+ipScanList[dividirFim])
         ips = netaddr.IPRange(ipScanList[dividirInit], ipScanList[dividirFim])
@@ -107,17 +110,17 @@ def sendScanToWorker(ipToScan,moduleToScan,portasToScan,isUrl):
             if avaiable == True:
                 if isUrl == False:
                     sendScan(worker,str(cidr),moduleToScan,portasToScan)
+                    
                 else:
-        
                     sendCustomScan(worker,str(cidr),moduleToScan)
         if len(ipScanList)==1:
             break
         dividirInit=dividirInit+dividir
         dividirFim=dividirFim+dividir
-
-        while(True):
-            if len(results) == workersize or len(results) > 0 and len(ipScanList):
-                break
+       
+    while(True):
+        if len(results) == workersize or len(results) > 0 and len(ipScanList)==1:
+            break
 
 
 def start_server():

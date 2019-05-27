@@ -74,7 +74,10 @@ class MyPrompt(Cmd):
         if resp.Resposta == "ERROR":
             print("Invalid arguments\nType 'help scan' to see documentation")
             return
-        print(resp.Resposta)
+        if "No matching ports" in resp.Resposta:
+            print("There is no port: "+ports+ " in module "+module)
+            return
+        print(resp.Resposta) #TODO Dar Parse
 
 
     def help_scan(self):
