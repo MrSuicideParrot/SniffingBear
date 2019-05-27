@@ -25,7 +25,7 @@ services:
     container_name: mtpot
 
   dionaea:
-    image: ./dionaea
+    build: ./dionaea
     container_name: dionaea
 
   kippo:

@@ -1,0 +1,18 @@
+FROM python:2.7
+
+RUN apt-get -y update &&\
+    apt-get install -y masscan &&\
+    apt-get --purge autoremove -y && \
+    apt-get clean && \
+    rm -rf \
+	/tmp/* \
+	/var/lib/apt/lists/* \
+        /var/tmp/*
+
+ADD requirements.txt .
+
+RUN pip install -r requirements.txt
+
+ADD Worker .
+ENV SERVERIP 172.18.0.1
+CMD python worker.py ServerIp $SERVERIP
