@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nscan.proto\"=\n\x0bScanRequest\x12\x0f\n\x07IpRange\x18\x01 \x01(\t\x12\x0e\n\x06Modulo\x18\x02 \x01(\t\x12\r\n\x05Ports\x18\x03 \x01(\t\" \n\x0cScanResponse\x12\x10\n\x08Resposta\x18\x01 \x01(\t\"$\n\x12\x44\x65scriptionRequest\x12\x0e\n\x06Modulo\x18\x01 \x01(\t\"*\n\x13\x44\x65scriptionResponse\x12\x13\n\x0b\x44\x65scription\x18\x01 \x01(\t\",\n\x0eModulesRequest\x12\x1a\n\x12RequestModulesName\x18\x01 \x01(\t\"\"\n\nModuleList\x12\x14\n\x0cModulesNames\x18\x01 \x03(\t2\x9e\x01\n\x04Scan\x12>\n\x0fScanDescription\x12\x13.DescriptionRequest\x1a\x14.DescriptionResponse\"\x00\x12\'\n\x06ScanIp\x12\x0c.ScanRequest\x1a\r.ScanResponse\"\x00\x12-\n\x0bListModules\x12\x0f.ModulesRequest\x1a\x0b.ModuleList\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nscan.proto\"=\n\x0bScanRequest\x12\x0f\n\x07IpRange\x18\x01 \x01(\t\x12\x0e\n\x06Modulo\x18\x02 \x01(\t\x12\r\n\x05Ports\x18\x03 \x01(\t\" \n\x0cScanResponse\x12\x10\n\x08Resposta\x18\x01 \x01(\t\"$\n\x12\x44\x65scriptionRequest\x12\x0e\n\x06Modulo\x18\x01 \x01(\t\"*\n\x13\x44\x65scriptionResponse\x12\x13\n\x0b\x44\x65scription\x18\x01 \x01(\t\",\n\x0eModulesRequest\x12\x1a\n\x12RequestModulesName\x18\x01 \x01(\t\"\"\n\nModuleList\x12\x14\n\x0cModulesNames\x18\x01 \x03(\t\"7\n\x11\x43ustomScanRequest\x12\x0f\n\x07IpRange\x18\x01 \x01(\t\x12\x11\n\tModuloUrl\x18\x02 \x01(\t\"0\n\x12\x43ustomScanResponse\x12\x1a\n\x12RespostaCustomScan\x18\x01 \x01(\t2\xd7\x01\n\x04Scan\x12>\n\x0fScanDescription\x12\x13.DescriptionRequest\x1a\x14.DescriptionResponse\"\x00\x12\'\n\x06ScanIp\x12\x0c.ScanRequest\x1a\r.ScanResponse\"\x00\x12\x37\n\nCustomScan\x12\x12.CustomScanRequest\x1a\x13.CustomScanResponse\"\x00\x12-\n\x0bListModules\x12\x0f.ModulesRequest\x1a\x0b.ModuleList\"\x00\x62\x06proto3')
 )
 
 
@@ -225,12 +225,83 @@ _MODULELIST = _descriptor.Descriptor(
   serialized_end=273,
 )
 
+
+_CUSTOMSCANREQUEST = _descriptor.Descriptor(
+  name='CustomScanRequest',
+  full_name='CustomScanRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='IpRange', full_name='CustomScanRequest.IpRange', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='ModuloUrl', full_name='CustomScanRequest.ModuloUrl', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=275,
+  serialized_end=330,
+)
+
+
+_CUSTOMSCANRESPONSE = _descriptor.Descriptor(
+  name='CustomScanResponse',
+  full_name='CustomScanResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='RespostaCustomScan', full_name='CustomScanResponse.RespostaCustomScan', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=332,
+  serialized_end=380,
+)
+
 DESCRIPTOR.message_types_by_name['ScanRequest'] = _SCANREQUEST
 DESCRIPTOR.message_types_by_name['ScanResponse'] = _SCANRESPONSE
 DESCRIPTOR.message_types_by_name['DescriptionRequest'] = _DESCRIPTIONREQUEST
 DESCRIPTOR.message_types_by_name['DescriptionResponse'] = _DESCRIPTIONRESPONSE
 DESCRIPTOR.message_types_by_name['ModulesRequest'] = _MODULESREQUEST
 DESCRIPTOR.message_types_by_name['ModuleList'] = _MODULELIST
+DESCRIPTOR.message_types_by_name['CustomScanRequest'] = _CUSTOMSCANREQUEST
+DESCRIPTOR.message_types_by_name['CustomScanResponse'] = _CUSTOMSCANRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ScanRequest = _reflection.GeneratedProtocolMessageType('ScanRequest', (_message.Message,), dict(
@@ -275,6 +346,20 @@ ModuleList = _reflection.GeneratedProtocolMessageType('ModuleList', (_message.Me
   ))
 _sym_db.RegisterMessage(ModuleList)
 
+CustomScanRequest = _reflection.GeneratedProtocolMessageType('CustomScanRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CUSTOMSCANREQUEST,
+  __module__ = 'scan_pb2'
+  # @@protoc_insertion_point(class_scope:CustomScanRequest)
+  ))
+_sym_db.RegisterMessage(CustomScanRequest)
+
+CustomScanResponse = _reflection.GeneratedProtocolMessageType('CustomScanResponse', (_message.Message,), dict(
+  DESCRIPTOR = _CUSTOMSCANRESPONSE,
+  __module__ = 'scan_pb2'
+  # @@protoc_insertion_point(class_scope:CustomScanResponse)
+  ))
+_sym_db.RegisterMessage(CustomScanResponse)
+
 
 
 _SCAN = _descriptor.ServiceDescriptor(
@@ -283,8 +368,8 @@ _SCAN = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=276,
-  serialized_end=434,
+  serialized_start=383,
+  serialized_end=598,
   methods=[
   _descriptor.MethodDescriptor(
     name='ScanDescription',
@@ -305,9 +390,18 @@ _SCAN = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='CustomScan',
+    full_name='Scan.CustomScan',
+    index=2,
+    containing_service=None,
+    input_type=_CUSTOMSCANREQUEST,
+    output_type=_CUSTOMSCANRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='ListModules',
     full_name='Scan.ListModules',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_MODULESREQUEST,
     output_type=_MODULELIST,

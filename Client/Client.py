@@ -69,7 +69,7 @@ class MyPrompt(Cmd):
         channel = grpc.insecure_channel(serverIp+":"+serverPort)
         stub = scan_pb2_grpc.ScanStub(channel)
         message =scan_pb2.ScanRequest(IpRange=ipRange,Modulo=module,Ports=ports)
-        resp=stub.ScanIp(message)
+        resp = stub.ScanIp(message)
         channel.close()
         if resp.Resposta == "ERROR":
             print("Invalid arguments\nType 'help scan' to see documentation")
@@ -91,6 +91,9 @@ class MyPrompt(Cmd):
         ipRange=arg[0]
         moduleUrl=arg[1]
         channel = grpc.insecure_channel(serverIp+":"+serverPort)
+        stub = scan_pb2_grpc.ScanStub(channel)
+        message =scan_pb2.CustomScanRequest(IpRange=ipRange,ModuloUrl=moduleUrl)
+        resp = stub.CustomScan(message)
         
     def help_customScan(self):
         print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a custom module.\n\tPlease provide a module url in the <moduleUrl> argument.\nUsage: customScan <IP> <moduleUrl>")
@@ -104,6 +107,9 @@ def main():
     parser.add_argument("ServerPort", nargs='?', default="46000")
     args = parser.parse_args()
     
+    global serverIp
+    global serverPort
+
     serverIp=args.ServerIp
     serverPort=args.ServerPort
     

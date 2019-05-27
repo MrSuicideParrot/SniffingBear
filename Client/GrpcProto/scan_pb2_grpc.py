@@ -24,6 +24,11 @@ class ScanStub(object):
         request_serializer=scan__pb2.ScanRequest.SerializeToString,
         response_deserializer=scan__pb2.ScanResponse.FromString,
         )
+    self.CustomScan = channel.unary_unary(
+        '/Scan/CustomScan',
+        request_serializer=scan__pb2.CustomScanRequest.SerializeToString,
+        response_deserializer=scan__pb2.CustomScanResponse.FromString,
+        )
     self.ListModules = channel.unary_unary(
         '/Scan/ListModules',
         request_serializer=scan__pb2.ModulesRequest.SerializeToString,
@@ -49,6 +54,13 @@ class ScanServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def CustomScan(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def ListModules(self, request, context):
     # missing associated documentation comment in .proto file
     pass
@@ -68,6 +80,11 @@ def add_ScanServicer_to_server(servicer, server):
           servicer.ScanIp,
           request_deserializer=scan__pb2.ScanRequest.FromString,
           response_serializer=scan__pb2.ScanResponse.SerializeToString,
+      ),
+      'CustomScan': grpc.unary_unary_rpc_method_handler(
+          servicer.CustomScan,
+          request_deserializer=scan__pb2.CustomScanRequest.FromString,
+          response_serializer=scan__pb2.CustomScanResponse.SerializeToString,
       ),
       'ListModules': grpc.unary_unary_rpc_method_handler(
           servicer.ListModules,

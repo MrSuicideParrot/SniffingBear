@@ -3,6 +3,7 @@ syntax = "proto3";
 service Scan{
     rpc ScanDescription(DescriptionRequest) returns (DescriptionResponse) {}
     rpc ScanIp(ScanRequest) returns (ScanResponse) {}
+    rpc CustomScan(CustomScanRequest) returns (CustomScanResponse) {}
     rpc ListModules(ModulesRequest) returns (ModuleList){}
 }
 message ScanRequest{
@@ -26,6 +27,14 @@ message ModulesRequest{
 }
 message ModuleList{
     repeated string ModulesNames=1;
+}
+
+message CustomScanRequest{
+    string IpRange = 1;
+    string ModuloUrl = 2;
+}
+message CustomScanResponse{
+    string RespostaCustomScan=1;
 }
 
 //python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. scan.proto

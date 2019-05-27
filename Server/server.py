@@ -48,9 +48,6 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         moduleToScan=request.Modulo
         portasToScan=request.Ports
         
-        
-            
-        
         if moduleToScan == "all":#TODO
             moduleToScan=','.join(plugins.GetPluginsNames())
             print("aqui"+moduleToScan)
@@ -102,11 +99,18 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         result = {'Resposta':'TEMPORARIO'} #TODO Mudar resposta
         return scan_pb2.ScanResponse(**result)
 
+    def CustomScan(self, request, context):
+        ipToScan=request.IpRange
+        moduleUrl=request.ModuloUrl
+
+        print(moduleUrl)
+
+
 def start_server():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     connect_pb2_grpc.add_ConnectServicer_to_server(ServerInit(),server)
     scan_pb2_grpc.add_ScanServicer_to_server(ClientCom(),server)
-    server.add_insecure_port('[::]:{}'.format(portaServidor))
+    server.add_insecure_port('0.0.0.0:{}'.format(portaServidor))
 
     server.start()
     print ('[*] Servidor Iniciado')
@@ -148,7 +152,6 @@ def main():
     args = parser.parse_args()
     portaServidor=args.ServerPort
 
-    
     start_server()
 
 if __name__== "__main__":
