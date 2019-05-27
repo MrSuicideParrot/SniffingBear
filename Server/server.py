@@ -68,6 +68,15 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
     def CustomScan(self, request, context):
         ipToScan=request.IpRange
         moduleUrl=request.ModuloUrl
+        
+        sendScanToWorker(ipToScan,moduleUrl,[],True)
+        
+        for i in range(len(results)): #TODO Mudar resposta
+            x=results.pop()
+            print(x)
+        
+        result = {'RespostaCustomScan':'TEMPORARIO'} #TODO Mudar resposta
+        return scan_pb2.CustomScanResponse(**result)
 
 
 def sendScanToWorker(ipToScan,moduleToScan,portasToScan,isUrl):
@@ -139,7 +148,7 @@ def sendScan(worker,range,module,portas):
 
 def sendCustomScan(worker,range,moduleUrl):
 
-    def GetScanResult(done):
+    def GetScanResults(done):
         results.append(done.result().RespostaCustomScan)
         replaceValueDic(workerList,worker,True)
 
@@ -148,7 +157,7 @@ def sendCustomScan(worker,range,moduleUrl):
     stub = scan_pb2_grpc.ScanStub(channel)
     message =scan_pb2.CustomScanRequest(IpRange=range,ModuloUrl=moduleUrl)
     call_future= stub.CustomScan.future(message)
-    call_future.add_done_callback(GetScanResult)
+    call_future.add_done_callback(GetScanResults)
 
     
 def replaceValueDic(dicionario, key_to_find, replace):

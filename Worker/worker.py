@@ -72,7 +72,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             server.stop(0)
             print('[*] A Encerrar o Client')
 
-    def ScanIp(self, request, context): #TODO
+    def ScanIp(self, request, context): #TODO Subfunçoes
         ipToScan=request.IpRange
         moduleToScan=request.Modulo
         portasToScan=request.Ports
@@ -94,22 +94,8 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             portList=list(map(int,portList))
         
         for module in moduleList:    
-            
             if plugins.checkIfPluginExists(module)==False:
-                print('Downloading module '+module)
-                files=[]
-                files.append(module + ".py")
-                files.append(module + ".yapsy-plugin")
-                
-                for filetmp in files:
-                    filedata = urllib2.urlopen(defaultURL+filetmp)  
-                    datatowrite = filedata.read()
-
-                    with open('./modules/'+filetmp, 'wb') as f:  
-                        f.write(datatowrite)
-                
-                    st = os.stat('./modules/'+filetmp)
-                    os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
+                downloadModule(module,False)
             
         plugins.reloadPlugins()
         
@@ -144,6 +130,61 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         print("Done")
         result = {'Resposta': "Fostes Scanado"}
         return scan_pb2.ScanResponse(**result)
+    
+    def CustomScan(self, request, context):
+        ipToScan=request.IpRange
+        moduleUrl=request.ModuloUrl
+        
+        modulo = downloadModule(moduleUrl,True)
+        plugins.reloadPlugins()
+        
+        plugin = plugins.getPluginIfExists(modulo) 
+        plugin = plugin.plugin_object
+        
+        IP_PORTS=[]
+        IP_PORTS.extend(plugin.get_port_list())
+        
+        if len(IP_PORTS) == 0:
+            print("No matching ports")
+            result = {'RespostaCustomScan': "No matching ports"}
+            return scan_pb2.CustomScanResponse(**result)
+        
+        availableHosts = doMasscan(ipToScan, IP_PORTS)
+        resposta = {}
+        for i in availableHosts:
+            resposta[i] = plugin.run(i)
+            
+        print("Done")
+        result = {'RespostaCustomScan': "Fostes Scanado Custom"}
+        return scan_pb2.CustomScanResponse(**result)
+        
+def downloadModule(module,isUrl):
+    
+    customUrl=""
+    if isUrl == True:
+        tmp=module.split('/')
+        mod=tmp[len(tmp)-1]
+        customUrl =module.replace(mod, '')
+        module = mod 
+    print('Downloading module '+module)
+    files=[]
+    files.append(module + ".py")
+    files.append(module + ".yapsy-plugin")
+    
+    for filetmp in files:
+        if isUrl == False:
+            filedata = urllib2.urlopen(defaultURL+filetmp)  
+        else:
+            filedata = urllib2.urlopen(customUrl+filetmp)  
+        datatowrite = filedata.read()
+
+        with open('./modules/'+filetmp, 'wb') as f:  
+            f.write(datatowrite)
+    
+        st = os.stat('./modules/'+filetmp)
+        os.chmod('./modules/'+filetmp, st.st_mode | stat.S_IEXEC)
+    if isUrl == True:
+        return module
 
 def main():
     parser = argparse.ArgumentParser()
