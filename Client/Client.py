@@ -135,9 +135,9 @@ def printOutput(resp):
             continue 
         for key,value in respPrint.iteritems():
             print(str(key))
-            falsos=0
-            verdades=0
             for lista in value:
+                falsos=0
+                verdades=0
                 for subkey,subvalue in lista.iteritems():
                     if subvalue == False:
                         print("\t"+str(subkey)+" "+colored(str(subvalue),'red'))
