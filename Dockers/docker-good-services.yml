@@ -4,13 +4,15 @@ services:
   good-ssh:
     image: krlmlr/debian-ssh
     container_name: debian-ssh
+    environment:
+      - SSH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1AGW4FG8xruPCpgibvtrsw4GVnc63FVQyo9cIv63dsLwPWo6NB29XmhIXHCWo+qIdvpfrjili4ONNc6NmWs7DeX8bN0+jjcblOZtRsEQ5syT+ltxRbmszDbYd+fov6eZwHJcKJQ12/vLyr38XSG3Im78fvxMWfPplc0ece8gRVK/7G80eu1CfbRPjYIh5WS2Ttb/wbenFTLPG4oqVN4sQS2TE0lxf8EJC2rkETZavfs74DMQMkO5qVWWflprC+mQpEO1ihh1Klf4fnbqAer2eIxG+TmvDF/iCc/fV7y3KIti6j4HPZlCpau3wnehXakywqtN20dx/O/i8VJVslrX0EDjHz4c4sY9BjQUkXnNTTDQ/9OSWwh1beezcdlF6hUM0hS2KmNlBAYbZdc6pVHkFAbzWmd4bCnSU74JT0B6i4MS+iaT/VQ1zr65c5UtoQP59AWXWke80A1qebToCV4yBXKgz6qcfaNgxmQNUcW5cndmxUqcnR8eVL/yRBI2ttg+b5fzEMgkVge4nOtAeEknHZj65S3GdzUS9caZW16/tl/A7UXVzthlwfvbP0u+ie5NbpSxWVYwtLYeI/D0eIL01Ej1EvfPscyK4jQN6CJOgbnNCu02cV5GpVLVU5zG7g8xl6Vh7wAwlw51E1ayOJjExXttjMP8Ug1ac+5uHGkMUVw== dumahk21@gmail.com"
 
   good-telnet:
     image: ddhhz/nyancat-server
     container_name: telnet
 
   good-ftp:
-    image: bogem/ftp
+    image: fauria/vsftpd
     container_name: ftp
 
   good-http:
