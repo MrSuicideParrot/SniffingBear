@@ -74,7 +74,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             server.stop(0)
             print('[*] A Encerrar o Client')
 
-    def ScanIp(self, request, context): #TODO Subfunçoes
+    def ScanIp(self, request, context):
         ipToScan=request.IpRange
         moduleToScan=request.Modulo
         portasToScan=request.Ports
@@ -124,6 +124,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             result = {'Resposta': "No matching ports"}
             return scan_pb2.ScanResponse(**result)
         
+        IP_PORTS = list(dict.fromkeys(IP_PORTS))
         availableHosts = doMasscan(ipToScan, IP_PORTS)
         resposta = {}
         for i in availableHosts:
@@ -163,6 +164,8 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             print("No matching ports")
             result = {'RespostaCustomScan': "No matching ports"}
             return scan_pb2.CustomScanResponse(**result)
+        
+        IP_PORTS = list(dict.fromkeys(IP_PORTS))
         
         availableHosts = doMasscan(ipToScan, IP_PORTS)
         resposta = {}
