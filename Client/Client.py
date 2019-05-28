@@ -83,7 +83,7 @@ class MyPrompt(Cmd):
         resp=str(resp)
         resp=resp.split(';')
         print(resp)
-        code.interact(local=locals())
+        #code.interact(local=locals())
 
 
     def help_scan(self):
