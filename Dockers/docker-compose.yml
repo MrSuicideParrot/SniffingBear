@@ -108,10 +108,15 @@ services:
 
 # Snare service
   snare:
-    build: ./snare
+    build:
+      context: ./snare
+      args: 
+        PAGE_URL: "nucc.dcc.fc.up.pt"
     container_name: snare
     stop_signal: SIGKILL
     tty: true
+    links:
+      - tanner:tanner.mushmush.org
     ports:
      - "80:80"
     image: "mushorg/snare:latest"
