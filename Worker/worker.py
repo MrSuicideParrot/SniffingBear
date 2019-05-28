@@ -133,7 +133,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
 
                 """ Verificar se deu tudo falso """
                 s = False
-                for i1 in res:
+                for i1 in list(res.values()):
                     s = s or i1
                 
                 if s:
