@@ -59,6 +59,8 @@ Start the Server
 Start the Worker
 * `worker.py [-h] [WorkerPort] [ServerIp] [ServerPort]`
 
+------------------------------------------------------------------------
+
 All of the above components support a helping documentation when starting them.
 
 * `python Client.py -h`
