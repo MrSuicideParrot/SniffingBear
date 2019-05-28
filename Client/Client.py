@@ -106,7 +106,7 @@ class MyPrompt(Cmd):
         #if resp.Resposta == "ERROR":
         #    print("Invalid arguments\nType 'help scan' to see documentation")
         #    return
-        printOutput(resp.Resposta)
+        printOutput(resp.RespostaCustomScan)
         
         
     def help_customScan(self):

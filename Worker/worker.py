@@ -172,7 +172,18 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         availableHosts = doMasscan(ipToScan, IP_PORTS)
         resposta = {}
         for i in availableHosts:
-            resposta[i] = plugin.run(i)
+            res = plugin.run(i)
+
+            """ Verificar se deu tudo falso """
+            s = False
+            for i1 in list(res.values()):
+                s = s or i1
+            
+            if s:
+                try:
+                    resposta[i].append(res)
+                except KeyError:
+                    resposta[i] = [res]
         
         print("Done")
         result = {'RespostaCustomScan': json.dumps(resposta)}
