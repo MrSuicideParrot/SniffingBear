@@ -3,16 +3,16 @@ version: '2.3'
 services:
   good-ssh:
     image: rlmlr/debian-ssh
-    name: debian-ssh
+    container_name: debian-ssh
 
   good-telnet:
     image: ddhhz/nyancat-server
-    name: telnet
+    container_name: telnet
 
   good-ftp:
     image: bogem/ftp
-    name: ftp
+    container_name: ftp
 
   good-http:
     image: httpd
-    name: http
+    container_name: http
