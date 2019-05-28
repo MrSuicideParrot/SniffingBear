@@ -65,7 +65,10 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         resp=""
         for i in range(len(results)): #TODO Mudar resposta
             x=results.pop()
-            resp=resp+";"+x
+            if resp != "":
+                resp=resp+";"+x
+            else:
+                resp=x
 
         result = {'Resposta':resp} #TODO Mudar resposta
         return scan_pb2.ScanResponse(**result)
@@ -79,7 +82,10 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
         resp=""
         for i in range(len(results)): #TODO Mudar resposta
             x=results.pop()
-            resp=resp+";"+x
+            if resp != "":
+                resp=resp+";"+x
+            else:
+                resp=x
         
         result = {'RespostaCustomScan':resp} #TODO Mudar resposta
         return scan_pb2.CustomScanResponse(**result)

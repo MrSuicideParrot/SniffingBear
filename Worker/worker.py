@@ -142,7 +142,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
                         resposta[i] = [res]
 
 
-        print(resposta)
+        #print(resposta)
         result = {'Resposta': json.dumps(resposta)}
         return scan_pb2.ScanResponse(**result)
     
