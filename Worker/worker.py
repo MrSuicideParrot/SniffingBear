@@ -29,7 +29,7 @@ def doMasscan(ip, ports):
  
     try:
         mas = masscan.PortScanner()
-        mas.scan(ip, ports=",".join(str(i) for i in ports))
+        mas.scan(ip, ports=",".join(str(i) for i in ports), arguments='--wait 0')
 
         hosts_Info = mas.scan_result["scan"]
         outList = []
