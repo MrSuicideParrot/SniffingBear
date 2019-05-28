@@ -128,8 +128,21 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         resposta = {}
         for i in availableHosts:
             for plugin in pluginsList:
-                resposta[i] = plugin.run(i)
-        print("Done")
+                res = plugin.run(i)
+
+                """ Verificar se deu tudo falso """
+                s = False
+                for i1 in res:
+                    s = s or i1
+                
+                if s:
+                    try:
+                        resposta[i].append(res)
+                    except KeyError:
+                        resposta[i] = [res]
+
+
+        print(resposta)
         result = {'Resposta': json.dumps(resposta)}
         return scan_pb2.ScanResponse(**result)
     
