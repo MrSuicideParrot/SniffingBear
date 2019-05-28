@@ -1,5 +1,7 @@
 # :honey_pot:  &nbsp; SniffingBear  &nbsp; :honey_pot:
 
+------------------------------------------------------------------------
+
 ### :honeybee:  &nbsp; Introduction  &nbsp; :honeybee:
 
 A modular and distributed tool developed in python to scan networks for honeypots
