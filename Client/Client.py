@@ -135,12 +135,26 @@ def printOutput(resp):
             continue 
         for key,value in respPrint.iteritems():
             print(str(key))
+            falsos=0
+            verdades=0
             for lista in value:
                 for subkey,subvalue in lista.iteritems():
                     if subvalue == False:
                         print("\t"+str(subkey)+" "+colored(str(subvalue),'red'))
+                        falsos=falsos+1
                     else:
                         print("\t"+str(subkey)+" "+colored(str(subvalue),'green'))
+                        verdades=verdades+1
+                prob=verdades/verdades+falsos
+                if prob > 0.7:
+                    #prob=prob*100
+                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob*100,'green') +colored('%','green'))
+                elif prob > 0.4:
+                    prob=prob*100
+                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob,'yellow') +colored('%','yellow'))
+                else:
+                    prob=prob*100
+                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob,'red') +colored('%','red'))
 
 def main():
     parser = argparse.ArgumentParser()
