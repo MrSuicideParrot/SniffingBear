@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   good-ssh:
-    image: rlmlr/debian-ssh
+    image: krlmlr/debian-ssh
     container_name: debian-ssh
 
   good-telnet:
