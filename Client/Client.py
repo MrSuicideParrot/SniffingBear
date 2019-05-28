@@ -6,6 +6,7 @@ from cmd import Cmd
 from GrpcProto import scan_pb2
 from GrpcProto import scan_pb2_grpc
 import argparse
+import code
 
 serverIp='localhost'
 serverPort="46000"
@@ -77,7 +78,12 @@ class MyPrompt(Cmd):
         if "No matching ports" in resp.Resposta:
             print("There is no port: "+ports+ " in module "+module)
             return
-        print(resp.Resposta) #TODO Dar Parse
+         #TODO Dar Parse
+        resp=resp.Resposta
+        resp=str(resp)
+        resp=resp.split(';')
+        print(resp)
+        #code.interact(local=locals())
 
 
     def help_scan(self):
@@ -97,6 +103,7 @@ class MyPrompt(Cmd):
         stub = scan_pb2_grpc.ScanStub(channel)
         message =scan_pb2.CustomScanRequest(IpRange=ipRange,ModuloUrl=moduleUrl)
         resp = stub.CustomScan(message)
+        print(resp)
         
     def help_customScan(self):
         print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a custom module.\n\tPlease provide a module url in the <moduleUrl> argument.\nUsage: customScan <IP> <moduleUrl>")
