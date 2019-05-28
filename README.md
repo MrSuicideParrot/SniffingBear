@@ -1,4 +1,7 @@
 # SniffingBear
+
+### Introduction
+
 A modular and distributed tool developed in python to scan networks for honeypots
 
 ------------------------------------------------------------------------
@@ -20,3 +23,5 @@ Open the terminal and type following commands.
 ------------------------------------------------------------------------
 
 ### :fire: &nbsp; How to Use &nbsp; :fire:
+
+## Client
