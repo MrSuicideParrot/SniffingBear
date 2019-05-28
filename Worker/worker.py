@@ -106,8 +106,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         
         for module in moduleList:
             print("[*] Scanning "+ipToScan+" Modulo "+module)
-            if module == "telnetlogger": #TODO RESOLVER
-                continue
+            
             plugin = plugins.getPluginIfExists(module) 
             plugin = plugin.plugin_object
             pluginsList.append(plugin)
