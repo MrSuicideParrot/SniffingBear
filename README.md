@@ -24,4 +24,27 @@ Open the terminal and type following commands.
 
 ### :fire: &nbsp; How to Use &nbsp; :fire:
 
-## Client
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Client
+
+Start the Client
+* `python Client.py [ServerIp] [ServerPort]`
+
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Server
+
+Start the Server
+* `server.py [-h] [ServerPort]`
+
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Worker
+
+Start the Worker
+* `worker.py [-h] [WorkerPort] [ServerIp] [ServerPort]`
+
+All of the above components support a helping documentation when starting them.
+
+* `python Client.py -h`
+* `python Server.py -h`
+* `python Worker.py -h`
+
+:warning: &nbsp; **Warning** &nbsp; :warning:
+
+Use this tool at your own risk!
