@@ -16,6 +16,7 @@ import stat
 import masscan
 import pprint
 import socket
+import json
 
 pp = pprint.PrettyPrinter(indent=4)
 serverIp='localhost'
@@ -130,7 +131,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             for plugin in pluginsList:
                 resposta[i] = plugin.run(i)
         print("Done")
-        result = {'Resposta': "Fostes Scanado"}
+        result = {'Resposta': json.dumps(resposta)}
         return scan_pb2.ScanResponse(**result)
     
     def CustomScan(self, request, context):
@@ -159,7 +160,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
             resposta[i] = plugin.run(i)
             
         print("Done")
-        result = {'RespostaCustomScan': "Fostes Scanado Custom"}
+        result = {'RespostaCustomScan': json.dumps(resposta)}
         return scan_pb2.CustomScanResponse(**result)
         
 def downloadModule(module,isUrl):
