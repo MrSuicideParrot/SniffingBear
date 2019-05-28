@@ -14,5 +14,5 @@ ADD requirements.txt .
 RUN pip install -r requirements.txt
 
 ADD Worker .
-ENV SERVERIP 172.18.0.1
-CMD python worker.py ServerIp $SERVERIP
+ENV SERVERIP 172.24.0.1
+CMD python worker.py 2000 $SERVERIP
