@@ -1,0 +1,18 @@
+version: '2.3'
+
+services:
+  good-ssh:
+    image: rlmlr/debian-ssh
+    name: debian-ssh
+
+  good-telnet:
+    image: ddhhz/nyancat-server
+    name: telnet
+
+  good-ftp:
+    image: bogem/ftp
+    name: ftp
+
+  good-http:
+    image: httpd
+    name: http
