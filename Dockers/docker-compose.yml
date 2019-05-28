@@ -1,11 +1,15 @@
 version: '2.3'
 
-
 services:
   amun:
     build: ./amun
     container_name: amun
+  
+  amun.half:
+    build: ./amun.half
+    container_name: amun.half
 
+  
   beartrap:
     build: ./beartrap
     container_name: breatrap
