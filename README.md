@@ -39,7 +39,8 @@ Brief explanation about the module in question
 
 Scan and IP or a range of IP's with a given module (use 'all' if you want to run all of the modules), in a given port by default it scans all of the avaiable ports.
 * `sb > scan <IP> <moduleName> -p<ports>`
-Example
+
+* Example
 * `sb > scan 192.168.1.0/24 amun -p20,21,22,23,24,25`
 
 Scan and IP or a range of IP's with your custom module please provide de module url and follow our guide on how to create your own module.
