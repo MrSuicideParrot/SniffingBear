@@ -145,15 +145,14 @@ def printOutput(resp):
                     else:
                         print("\t"+str(subkey)+" "+colored(str(subvalue),'green'))
                         verdades=verdades+1
-                prob=verdades/verdades+falsos
-                if prob > 0.7:
-                    #prob=prob*100
-                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob*100,'green') +colored('%','green'))
-                elif prob > 0.4:
-                    prob=prob*100
+                prob=float(verdades)/float(verdades+falsos)
+                prob=prob*100
+                prob=float("{0:.2f}".format(prob))
+                if prob > 70:
+                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob,'green') +colored('%','green'))
+                elif prob > 40:
                     print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob,'yellow') +colored('%','yellow'))
                 else:
-                    prob=prob*100
                     print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob,'red') +colored('%','red'))
 
 def main():
