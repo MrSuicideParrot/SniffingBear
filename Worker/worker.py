@@ -17,6 +17,8 @@ import masscan
 import pprint
 import socket
 import json
+import code
+
 
 pp = pprint.PrettyPrinter(indent=4)
 serverIp='localhost'
@@ -65,14 +67,14 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         server.add_insecure_port('0.0.0.0:{}'.format(WorkerPort))
 
         server.start()
-        print ('[*] Esperando comandos')
+        print ('[*] Waiting orders')
 
         try:
             while True:
                 time.sleep(60*60*60)
         except KeyboardInterrupt:
             server.stop(0)
-            print('[*] A Encerrar o Client')
+            print('[*] Shutting down')
 
     def ScanIp(self, request, context):
         ipToScan=request.IpRange
@@ -119,7 +121,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
                 IP_PORTS.extend(plugin.get_port_list())
         
         if len(IP_PORTS) == 0:
-            print("No matching ports")
+            #print("No matching ports")
             result = {'Resposta': "No matching ports"}
             return scan_pb2.ScanResponse(**result)
         
@@ -143,6 +145,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
 
 
         #print(resposta)
+        #code.interact(local=locals())
         result = {'Resposta': json.dumps(resposta)}
         return scan_pb2.ScanResponse(**result)
     
@@ -160,7 +163,7 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         IP_PORTS.extend(plugin.get_port_list())
         
         if len(IP_PORTS) == 0:
-            print("No matching ports")
+            #print("No matching ports")
             result = {'RespostaCustomScan': "No matching ports"}
             return scan_pb2.CustomScanResponse(**result)
         
@@ -169,9 +172,20 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         availableHosts = doMasscan(ipToScan, IP_PORTS)
         resposta = {}
         for i in availableHosts:
-            resposta[i] = plugin.run(i)
+            res = plugin.run(i)
+
+            """ Verificar se deu tudo falso """
+            s = False
+            for i1 in list(res.values()):
+                s = s or i1
             
-        print("Done")
+            if s:
+                try:
+                    resposta[i].append(res)
+                except KeyError:
+                    resposta[i] = [res]
+        
+        #print("Done")
         result = {'RespostaCustomScan': json.dumps(resposta)}
         return scan_pb2.CustomScanResponse(**result)
         
@@ -224,13 +238,13 @@ def main():
     
     client = ServerInit()
     myip=getIP()
-    print(myip)
+    #print(myip)
     client.connectToServer(myip,WorkerPort)
 
     print("[*] Client Server Started")
     scan = ServerScan()
     scan.start_server(WorkerPort)
-    print("[*] Acabou")
+    print("[*] Shut Down")
     client.connectToServer(myip,WorkerPort)
 
 def getIP():

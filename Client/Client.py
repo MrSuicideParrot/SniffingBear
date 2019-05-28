@@ -7,6 +7,8 @@ from GrpcProto import scan_pb2
 from GrpcProto import scan_pb2_grpc
 import argparse
 import code
+import json
+from termcolor import colored
 
 serverIp='localhost'
 serverPort="46000"
@@ -78,11 +80,8 @@ class MyPrompt(Cmd):
         if "No matching ports" in resp.Resposta:
             print("There is no port: "+ports+ " in module "+module)
             return
-         #TODO Dar Parse
-        resp=resp.Resposta
-        resp=str(resp)
-        resp=resp.split(';')
-        print(resp)
+        
+        printOutput(resp.Resposta)
         #code.interact(local=locals())
 
 
@@ -103,13 +102,59 @@ class MyPrompt(Cmd):
         stub = scan_pb2_grpc.ScanStub(channel)
         message =scan_pb2.CustomScanRequest(IpRange=ipRange,ModuloUrl=moduleUrl)
         resp = stub.CustomScan(message)
-        print(resp)
+        channel.close()
+        #if resp.Resposta == "ERROR":
+        #    print("Invalid arguments\nType 'help scan' to see documentation")
+        #    return
+        printOutput(resp.RespostaCustomScan)
+        
         
     def help_customScan(self):
         print("DESCRIPTION\n\tScan either a range of ip addresses or just one specific ip with a custom module.\n\tPlease provide a module url in the <moduleUrl> argument.\nUsage: customScan <IP> <moduleUrl>")
 
     
     do_EOF = do_exit
+
+def printOutput(resp):
+    printList=[]
+    if ";" in resp:
+        resp=resp.split(';')
+        for x in resp:
+            x=json.loads(x)
+            printList.append(x)
+    else:
+        resp=json.loads(resp)
+        if resp=={}:
+            print("No honeypot found")
+            return
+        printList.append(resp)
+        
+    for respPrint in printList:
+        if respPrint=={}:
+            #print("No honeypot "+module)
+            continue 
+        for key,value in respPrint.iteritems():
+            print(str(key))
+            falsos=0
+            verdades=0
+            for lista in value:
+                for subkey,subvalue in lista.iteritems():
+                    if subvalue == False:
+                        print("\t"+str(subkey)+" "+colored(str(subvalue),'red'))
+                        falsos=falsos+1
+                    else:
+                        print("\t"+str(subkey)+" "+colored(str(subvalue),'green'))
+                        verdades=verdades+1
+                prob=verdades/verdades+falsos
+                if prob > 0.7:
+                    #prob=prob*100
+                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob*100,'green') +colored('%','green'))
+                elif prob > 0.4:
+                    prob=prob*100
+                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob,'yellow') +colored('%','yellow'))
+                else:
+                    prob=prob*100
+                    print("\t"+colored("Honeypot Probability ","yellow")+" "+ colored(prob,'red') +colored('%','red'))
 
 def main():
     parser = argparse.ArgumentParser()
