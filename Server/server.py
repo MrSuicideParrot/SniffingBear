@@ -26,11 +26,11 @@ class ServerInit(connect_pb2_grpc.ConnectServicer):
         addrs=ipWorker+":"+portWorker
         if addrs in workerList:
             workerList.pop(addrs)
-            print("\n[*] Terminou Ligacao: "+addrs)
+            print("\n[*] Connection over: "+addrs)
         else :
             tmp={str(addrs):True}
             workerList.update(tmp)
-            print("\n[*] Nova Ligacao: "+addrs)
+            print("\n[*] New Connection: "+addrs)
 
         result = {'Confirmation': True}
         return connect_pb2.HelloWorker(**result)
@@ -54,7 +54,7 @@ class ClientCom(scan_pb2_grpc.ScanServicer):
 
         if moduleToScan == "all":
             moduleToScan=','.join(plugins.GetPluginsNames())
-            print("aqui"+moduleToScan)
+            
 
         elif plugins.checkIfPluginExists(moduleToScan)==False:
             result = {'Resposta':'ERROR'}
@@ -108,9 +108,9 @@ def sendScanToWorker(ipToScan,moduleToScan,portasToScan,isUrl):
     dividirInit=0
     dividirFim=dividir-1
     workersize=len(workerList)
-    print(workersize)
+    
     for worker,avaiable in workerList.iteritems():
-        print("Dividir Range "+ipScanList[dividirInit]+" "+ipScanList[dividirFim])
+        print("Dividing Range "+ipScanList[dividirInit]+" "+ipScanList[dividirFim])
         ips = netaddr.IPRange(ipScanList[dividirInit], ipScanList[dividirFim])
         for cidr in ips.cidrs():
             if avaiable == True:
@@ -136,7 +136,7 @@ def start_server():
     server.add_insecure_port('0.0.0.0:{}'.format(portaServidor))
 
     server.start()
-    print ('[*] Servidor Iniciado')
+    print ('[*] Server Started')
 
     try:
         while True:
@@ -144,7 +144,7 @@ def start_server():
 
     except KeyboardInterrupt:
         server.stop(0)
-        print('[*] A Encerrar o Servidor')
+        print('[*] Server Shut Down')
 
 def sendScan(worker,range,module,portas):
     
