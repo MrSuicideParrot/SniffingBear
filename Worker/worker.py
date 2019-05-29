@@ -130,18 +130,23 @@ class ServerScan(scan_pb2_grpc.ScanServicer): #TODO GET MODULO
         resposta = {}
         for i in availableHosts:
             for plugin in pluginsList:
-                res = plugin.run(i)
-
-                """ Verificar se deu tudo falso """
-                s = False
-                for i1 in list(res.values()):
-                    s = s or i1
+                portTMP=[]
+                portTMP.extend(plugin.get_port_list())
                 
-                if s:
-                    try:
-                        resposta[i].append(res)
-                    except KeyError:
-                        resposta[i] = [res]
+                if set(IP_PORTS) & set(portTMP):
+                    
+                    res = plugin.run(i)
+
+                    """ Verificar se deu tudo falso """
+                    s = False
+                    for i1 in list(res.values()):
+                        s = s or i1
+                    
+                    if s:
+                        try:
+                            resposta[i].append(res) 
+                        except KeyError:
+                            resposta[i] = [res]
 
 
         #print(resposta)
