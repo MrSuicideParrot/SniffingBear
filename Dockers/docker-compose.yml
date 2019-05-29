@@ -124,6 +124,8 @@ services:
     ports:
      - "80:80"
     image: "mushorg/snare:latest"
+    depends_on:
+      - tanner
 
   
 
