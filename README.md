@@ -75,3 +75,12 @@ All of the above components support a helping documentation when starting them.
 :warning: &nbsp; **Warning** &nbsp; :warning:
 
 Use this tool at your own risk!
+
+------------------------------------------------------------------------
+
+## :sparkles:  &nbsp; Contributors  &nbsp; :sparkles:
+
+<table><tr><td align="center"><a href="https://github.com/andreluis034"><img src="https://avatars3.githubusercontent.com/u/5006716?s=400&v=4" width="100px;" alt="André Brandão"/><br /><sub><b>André Brandão</b></sub></a> </td> <td align="center"><a href="https://github.com/FabioFreitas9"><img src="https://avatars3.githubusercontent.com/u/22847090?s=400&v=4" width="100px;" alt="Fábio Freitas"/><br /><sub><b>Fábio Freitas</b></sub></a></td> <td align="center"> <a href="https://github.com/0xSmiley"><img src="https://avatars3.githubusercontent.com/u/34580831?s=400&v=4" width="100px;" alt="Nuno Lopes"/><br /><sub><b>Nuno Lopes</b></sub></a> 
+ </td></tr></table>
+
+
